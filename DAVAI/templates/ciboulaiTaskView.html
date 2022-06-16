@@ -1,0 +1,226 @@
+{% extends "ciboulai.html" %}
+{% load static %}
+
+
+
+{% block mainContainer %}
+<div id='content'>
+<div>
+	<h1>{{task}}</h1>	
+    <p>Quick filters</p>
+    <div>
+      <button value="Ended" class="btn btn-outline-success filterClick">Ended</button>
+	  <button value="Crashed" class="btn btn-outline-danger filterClick">Crashed</button>
+	  <button value="OK" class="btn btn-success filterClick">OK</button>
+	  <button value="KO" class="btn btn-danger filterClick">KO</button>
+	  <button value="! Comp Issue !" class="btn btn-orange filterClick">!</button>
+	  <button value="? Unknown ?" class="btn btn-warning filterClick">?</button>
+	  <button value="" class="btn btn-primary filterClick">Reset filters</button>
+	  <button value="" class="btn btn-secondary filterSave" data-toggle="modal" data-target="#saveFilterModal" ><i class='fas fa-save fa-fw'></i>Save filters</button>
+<!-- 	  <button value="O" class="btn btn-secondary filterClick">O</button>
+	  <button value="-" class="btn btn-secondary filterClick">-</button> -->
+    </div>
+
+  <table id="tableview1" class="table table-hover">
+	  <thead>
+	    <tr>
+	        {% for key in headers %}
+			    <th scope="col"><span>{{key}}</span></th>
+			{% endfor %}
+	      
+	    </tr>
+	  </thead>
+	  <tbody>
+		{% for ti in tasksInstances %}
+		<td class=''><strong><a href="/lightView/{{ti.expRef.pk}}">{{ti.expRef.xpid}}</a></strong> (<small>{{ti.expRef.xpinfo | get_item:"comment" | safe }}</small>)
+			<a class='float-right' href="/admin/ciboulai/taskinstance/{{ti.pk}}/change/"><i class="fas fa-fw fa-user-lock"></i></a>
+	      </td>
+	      <td>{{ti.expRef.xpinfo | base_cycle | safe }}</td>
+	      <td>{{ti.expRef.user | safe }}</td>
+	      <td>{{ti.jsonTask | dateItself | dateUpdate| safe }}</td>
+              <td>
+                  <strong>{{ti.jsonTask | get_item:"continuity" | leadExpertDescription}}</strong><br>
+                  {{ti.jsonTask | get_item:"continuity" | get_item:"leadExpert" }}
+              </td>   
+              <td>
+		      {{ti.jsonTask | leadExpertItselfValue}}
+
+	      </td>
+
+	      <td>{{ti.jsonTask | get_item:"continuity" | get_item:"comparisonStatus" | compStatus_btn:forloop.counter | safe  }} </td>
+	      <td><a id="ajaxDetail_{{forloop.counter}}" class="btn btn-primary" href="#" data-toggle="modal" data-target="#taskDetail_{{forloop.counter}}" ><i class="fas fa-fw fa-plus"></i></a> </td>
+	      
+
+  
+	
+	    </tr>	  
+	    {% endfor %}   
+	  </tbody>
+	</table>   
+    </div>  
+
+  
+  </div>
+</div>
+
+{% for ti in tasksInstances %}
+<div class="modal taskDetail fade" id='taskDetail_{{forloop.counter}}'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{task}}: task details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="tabbable"> <!-- Only required for left/right tabs -->
+			<ul class="nav nav-tabs">
+			  <li class="nav-item">
+			    <a class="nav-link active" data-toggle="tab" href="#taskDetailTab1_{{forloop.counter}}">itself</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="tab" href="#taskDetailTab2_{{forloop.counter}}">continuity</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="tab" href="#taskDetailTab3_{{forloop.counter}}">consistency</a>
+			  </li>
+			</ul>
+			<div class="tab-content">
+			  <div class="tab-pane fade active show" id="taskDetailTab1_{{forloop.counter}}">
+{{ti.jsonTask | get_item:"itself" | prettyJson3 | safe}}
+			  </div>
+			  <div class="tab-pane fade" id="taskDetailTab2_{{forloop.counter}}">
+{{ti.jsonTask| get_item:"continuity" | prettyJson3 | safe}}
+			  </div>
+			  <div class="tab-pane fade" id="taskDetailTab3_{{forloop.counter}}">
+{{ti.jsonTask| get_item:"consistency"  | prettyJson3 | safe}}
+			  </div>
+			</div>      
+		
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endfor %}  
+
+
+
+
+<div class="modal fade" id='saveFilterModal'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Save filter inside url</h5>
+        <button id='closeNote' type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	      <input class="form-control" id="readOnlyInput" type="text" placeholder="" readonly="">
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/tether.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.easing.min.js' %}"></script> 
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
+
+<script>
+$(document).ready( function () {
+	
+	/* 	$('#refresh').click(function () {
+			var mess = $(this).data('value');
+			var xpid = $(this).data('xpid');
+			console.log(mess);
+			$('#importWarning').text(mess);
+			$('#inputXPID').val(xpid);
+		});	 */
+
+		$('.writeNote').click(function () {
+			var task=$(this).data('value');
+			$('#noteTask').text(task);
+		});	
+	    $('#inputNotebtn').click(function () {
+	    	var xpid = "{{exp.xpid}}";
+	    	var task = $('#noteTask').text();
+	    	var message = $('#noteTextarea').val();
+	        $.ajax({
+			url: '/addNote/',
+	            data: {
+	              'xpid': xpid,
+	              'task':task,
+	              'message':message,
+	            },
+	            dataType: 'json',
+	            success: function (data) {
+	              if (data.error) {
+	                  
+	                  alert(data.error);
+	              }        
+	              if (data.message) {
+	            	  alert(data.message);
+	            	  $('#closeNote').click();
+	              }
+	            }
+	          });   
+	    });
+	    
+		var table1=$('#tableview1').DataTable({		
+			 "lengthMenu": [[-1], [ "All"]],
+			 fixedHeader: true,
+		  "language": {
+			    "zeroRecords": "No tasks corresponding to request",
+			    "search": "Filter",
+			  } ,
+			"order": [[ 1, "desc" ]],
+		});  
+		var tables=$('.customTables').DataTable({		
+			 "lengthMenu": [[-1], [ "All"]],
+			 fixedHeader: true,
+		  "language": {
+			    "zeroRecords": "No tasks corresponding to request",
+			    "search": "Filter",
+			  } ,
+			"order": [[ 0, "asc" ]],
+		});  
+		$('.filterClick').click(function () {
+			var filter = $(this).prop('value');
+			table1.search( filter ).draw();
+		});	
+	        $('.filterSave').click(function () {
+		    var url=window.location.href.split('?')[0];
+		    $("#readOnlyInput").val(url+'?filter='+$("#tableview1_filter input").val());
+		});
+		var url = new URL($(location).attr('href'));
+		var filterArg = url.searchParams.get("filter");
+	        if(filterArg){
+			table1.search( filterArg ).draw();
+		};
+                $('.ajaxClickDetail').click(function () {
+                      var modalId = $(this).prop('id').split('_')[1];
+                      $("#ajaxDetail_"+modalId).click();
+                });
+
+	});
+
+</script>
+
+{% endblock %}
+
+    
+      
+
+</body>
+
+</html>

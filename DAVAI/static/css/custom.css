@@ -1,0 +1,76 @@
+.cursorWait{
+cursor:wait;
+}
+.sidebar-bottom{
+	position:absolute;
+	bottom:50px;
+	color:#fff;
+	padding:10px;
+}
+.btn-down{
+	position:fixed;
+	z-index:10;
+	bottom:0px;
+	left:0px;
+}
+.btn-down.btn{
+	float:left;
+}
+.popover{
+max-width: 70%;
+background: #dfe6f9;
+}
+.tab-content{
+	padding:5px;
+	color:#fff;
+}
+.btn-danger {
+    color: #fff;
+    background-color: #e74a3b;
+    border-color: #e74a3b;
+}
+.modal-dialog {
+    max-width: 1000px;
+}
+
+.taskDetail .modal-dialog {
+	max-width:1500px;
+}
+
+.btn-orange {
+    color: #fff;
+    background-color: #f17e14;
+    border-color: #f17e14;
+}
+.btn{
+	cursor:pointer;
+    white-space: nowrap;
+}
+
+.collapse .row{
+	border-bottom:1px solid #000;
+}
+
+.nav-upload{
+    position: absolute;
+    bottom: 0;
+    max-width: 100%;
+    width: 220px;
+    padding: 10px;
+}
+
+.penrose{
+	width: 60%;
+	padding: 50px;
+	margin-left: 20%;	
+}
+.bg-dark{
+	background:#000 !important;
+}
+#content{
+	margin-left:225px;
+	padding:0px 10px 10px 10px;
+}
+.sidebar .sidebar-brand{
+	text-transform:None;
+}

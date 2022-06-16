@@ -1,0 +1,59 @@
+.cursorWait{
+cursor:wait;
+}
+
+.popover{
+max-width: 70%;
+background: #dfe6f9;
+}
+.badge{
+ font-size:100%;
+}
+.tooltip-inner{
+	text-align:left;
+/*	width:700px !important;*/
+	min-width:300px !important;
+}
+.tab-content{
+    color:#000;	
+}
+.btn-danger {
+    color: #fff;
+    background-color: #e74a3b;
+    border-color: #e74a3b;
+}
+.modal-dialog {
+    max-width: 1000px;
+}
+
+.taskDetail .modal-dialog {
+	max-width:1500px;
+}
+
+.btn-orange {
+    color: #fff;
+    background-color: #f17e14;
+    border-color: #f17e14;
+}
+.btn{
+	cursor:pointer;
+    white-space: nowrap;
+}
+.row{
+  margin-right: 0rem;
+  margin-left: 0rem;
+}
+.collapse .row{
+	border-bottom:1px solid #000;
+}
+
+.nav-upload{
+    position: absolute;
+    bottom: 0;
+    max-width: 100%;
+    width: 220px;
+    padding: 10px;
+}
+.dataTables_wrapper{
+   width:100%;
+}

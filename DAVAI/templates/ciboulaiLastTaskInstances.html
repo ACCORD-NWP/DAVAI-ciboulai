@@ -1,0 +1,50 @@
+{% extends "ciboulai.html" %}
+{% load static %}
+
+
+
+{% block mainContainer %}
+<div id='content'>
+<div>
+  <h1>The 100 last updated task instances</h1>
+  <table id="tableview1" class="table table-hover">
+	  <thead>
+	    <tr>
+		<th scope="col"><span>TaskName</span></th>
+		<th scope="col"><span>XPID</span></th>
+		<th scope="col"><span>Updated</span></th>
+	  </thead>
+	  <tbody>
+		{% for task in taskInstancesList %}
+	    <tr class=''>
+		    <td><a href="/lightView/{{task.expRef.pk}}?filter={{task.taskRef.name}}">{{task.taskRef.name}}</a></td>
+              <td>{{task.expRef.xpid}}</td>
+	      <td>{{task.updated}}</td>
+
+	    </tr>	  
+	    {% endfor %}   
+	  </tbody>
+	</table>   
+
+  
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/tether.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.easing.min.js' %}"></script> 
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
+
+{% endblock %}
+
+    
+      
+
+</body>
+
+</html>

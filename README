@@ -1,0 +1,7 @@
+install django
+pip3 install --user django
+
+to lauch ciboulai in dbg mode, go to directory DAVAI
+and start
+python3.8 manage.py runserver
+

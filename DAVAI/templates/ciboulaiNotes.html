@@ -1,0 +1,64 @@
+{% extends "ciboulai.html" %}
+{% load static %}
+
+
+
+{% block mainContainer %}
+<div id='content'>
+<div>
+  <table id="tableview1" class="table table-hover">
+	  <thead>
+	    <tr>
+	      <th scope="col"><span>XPID</span></th>
+	      <th scope="col"><span>task</span></th>
+	      <th scope="col"><span>Message</span></th>
+	      
+	    </tr>
+	  </thead>
+	  <tbody>
+            {% for note in notes %}
+	    <tr class=''>
+	    <td>{{note.xpid}}  </td>
+	    <td>{{note.task}}  </td>
+	    <td>{{note.message}}  </td>
+	    </tr>	  
+	    {% endfor %}   
+	  </tbody>
+	</table>   
+    </div>  
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/tether.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.easing.min.js' %}"></script> 
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
+
+<script>
+$(document).ready( function () {
+
+                var table1=$('#tableview1').DataTable({         
+                         "lengthMenu": [[-1], [ "All"]],
+                         fixedHeader: true,
+                  "language": {
+                            "zeroRecords": "No tasks corresponding to request",
+                            "search": "Filter",
+                          } ,
+                        "order": [[ 1, "desc" ]],
+                });  
+});
+</script>
+
+{% endblock %}
+
+    
+      
+
+</body>
+
+</html>

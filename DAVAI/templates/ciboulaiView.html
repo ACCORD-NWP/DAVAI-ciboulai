@@ -1,0 +1,470 @@
+{% extends "ciboulai.html" %}
+{% load static %}
+
+
+
+{% block mainContainer %}
+<div id='content'>
+<div class='row bg-light'>
+	<div class="col-md-6 text-center" style="border: 5px solid;padding: 34px;">
+		<h2><strong><a href="/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> (<small>{{xpinfo | get_item:"comment" | safe }}</small>) <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2></div>
+<div class='col-md-6'>
+  <table class="table text-center">
+	  <thead>
+      <th scope="col"><button value="OK" class='btn btn-success filterClick'>OK</button></th>
+      <th scope="col"><button value="KO" class='btn btn-danger filterClick'>KO</button></th>
+      <th scope="col"><button value="Crashed" class='btn btn-outline-danger filterClick'>Crashed</button></th>
+      <th scope="col"><button value="?" class='btn btn-warning filterClick'>?</button></th>
+      <th scope="col"><button  class='btn btn-secondary'>NC</button></th>
+      </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {{exp.symbolSummary_ok| safe }}
+      {{exp.symbolSummary_ko| safe }}
+      {{exp.symbolSummary_cr| safe }}
+      {{exp.symbolSummary_tc| safe }}
+      {{exp.symbolSummary_nc| safe }}
+   
+    </tr>
+   </tbody>
+  </table>
+</div>
+</div>
+
+<div class='row bg-light' style="border-bottom: 5px solid;">
+    <div class='col-md-6'>
+	    <ul class='list-unstyled' style="line-height: 200%;"><strong>
+<li class='row'><span class='col-md-2'>PACK :</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"pack" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>USER :</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"user" | safe }} </span></li>
+  {% if exp.reference.pk is None  %}
+<li class='row'><span class='col-md-2'>No Reference</span></li>
+  {% else %}
+  <li class='row'><span class='col-md-2'>REF :</span><span class='offset-md-1 col-md-9'><a href="/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
+  {% endif %}
+<li class='row'><span class='col-md-2'>USECASE : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"usecase" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>GIT_BRANCH : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"git_branch" | safe }} </span></li>
+		    </strong></ul>
+    </div>
+    <div class='col-md-6'>
+     <ul class='list-unstyled'>
+        {% if xpinfo|newappenv %}
+         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvGlobalDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>APPENV_GLOBAL:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_global" | safe }}</span> </li>
+        <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvLamDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>APPENV_LAM:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_lam" | safe }}</span></li>
+         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvClimDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>APPENV_CLIM:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_clim" | safe }}</span></li>
+        <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#commonenvDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>COMMONENV:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"commonenv" | safe }}</span></li>
+      <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreGlobalDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>INPUT_STORE_GLOBAL:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"input_store_global" | safe }}</span></li>
+      <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreLamDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>INPUT_STORE_LAM:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"input_store_lam" | safe }}</span></li>
+      {% else %}
+      <p class='text-warning'>Warning : this display is broken for old experiments, the problem will disapear in recent davaï experiments...</p>
+      <li>{{xpinfo | get_item:"appenv" | safe }} <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvDetail" ><i class="fas fa-fw fa-plus"></i></a></li>
+      <li>common: {{xpinfo | get_item:"commonenv" | safe }}<a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#commonenvDetail" ><i class="fas fa-fw fa-plus"></i></a></li>
+      <li>store: {{xpinfo | get_item:"input_store" | safe }}<a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreDetail" ><i class="fas fa-fw fa-plus"></i></a></li>
+      {% endif %}
+
+     </ul>
+    </div>
+</div>
+
+<p>{{notes | length}} notes on <a href="/lightView/{{exp.pk}}">{{exp.xpid}}</a><a  href="#"  data-value="XP" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a></p><p>{{notes | note_btn:"XP" | safe }}</p>
+  <div class="card p-3">
+    <p>Quick filters</p>
+    <div>
+      <button value="Ended" class="btn btn-outline-success filterClick">Ended</button>
+	  <button value="Crashed" class="btn btn-outline-danger filterClick">Crashed</button>
+	  <button value="OK" class="btn btn-success filterClick">OK</button>
+	  <button value="KO" class="btn btn-danger filterClick">KO</button>
+	  <button value="! Comp Issue !" class="btn btn-orange filterClick">!</button>
+	  <button value="? Unknown ?" class="btn btn-warning filterClick">?</button>
+	  <button value="" class="btn btn-primary filterClick">Reset filters</button>
+	  <button value="" class="btn btn-secondary filterSave" data-toggle="modal" data-target="#saveFilterModal" ><i class='fas fa-save fa-fw'></i>Save filters</button>
+    </div>
+	<div id="accordion_filter" class="mb-3 mt-3">
+	  <div class="card">
+	    <div >
+	      <div class="card-body">
+		      <button value="forecast" class="btn filterClick">forecast</button>
+		      <button value="ensemble" class="btn filterClick">ensemble</button>
+		      <button value="adjoint" class="btn filterClick">adjoint</button>
+		      <button value="3D" class="btn filterClick">3D</button>
+		      <button value="4D" class="btn filterClick">4D</button>
+		      <button value="direct_jo" class="btn filterClick">direct_jo</button>
+		      <button value="lineartangent_test" class="btn filterClick">lineartangent_test</button>
+		      <button value="ecma2ccma" class="btn filterClick">ecma2ccma</button>
+		      <button value="screening" class="btn filterClick">screening</button>
+			  <button value="fullpos" class="btn filterClick">fullpos</button>
+			  <button value="dfi" class="btn filterClick">dfi</button>
+			  <button value="surfex" class="btn filterClick">surfex</button>
+			  <button value="LAM" class="btn filterClick">LAM</button>
+			  <button value="batodb" class="btn filterClick">batodb</button>
+			  <button value="minim" class="btn filterClick">minim</button>
+			  <button value="OOPS" class="btn filterClick">OOPS</button>
+			  <button value="CNT0" class="btn filterClick">CNT0</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>    
+    
+
+  <table id="tableview1" class="table table-hover">
+	  <thead>
+	    <tr>
+	        {% for key in headers %}
+			    <th scope="col"><span>{{key}}</span></th>
+			{% endfor %}
+	      
+	    </tr>
+	  </thead>
+	  <tbody>
+		{% for key, value in globalDico.items %}
+	    <tr class=''>
+		    <td><a href="/taskView/{{key.pk}}" >{{key}}</a>
+	      <a  href="#"  data-value="{{key}}" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a>
+	      {{notes | note_btn:key.name | safe}}
+
+	      
+	      </td>
+	      <td>{{value.itself.Updated| dateUpdate | safe}}</td>
+	      <td>{{value.itself.Status | status_btn:forloop.counter | safe}}</td>
+	      <td>{{value.continuity.comparisonStatus | compStatus_btn:forloop.counter | safe  }} </td>
+	      
+
+	      <td>
+	          <strong>{{value.continuity | leadExpertDescription}}</strong><br>
+	          {{value.continuity.leadExpert}}
+	      </td>
+	      <td>{{value.continuity | leadExpertValue}} </td>
+	      <td>{{value.continuity.drHookMax | getDrHookRelDiff:"Relative diff in Elapse time" | safe}} </td>
+	      <td>{{value.continuity.rss | getDrHookRelDiff:"Relative RSStotal diff" | safe }} </td>
+	      <td><a class="btn btn-primary" href="#" data-toggle="modal" data-target="#taskDetail_{{forloop.counter}}" ><i class="fas fa-fw fa-plus"></i></a> </td>
+	      
+
+  
+	
+	    </tr>	  
+	    {% endfor %}   
+	  </tbody>
+	</table>   
+    </div>  
+
+  
+  </div>
+</div>
+
+{% for key, value in globalDico.items %}
+<div class="modal taskDetail fade" id='taskDetail_{{forloop.counter}}'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{key}}: task details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="tabbable"> <!-- Only required for left/right tabs -->
+			<ul class="nav nav-tabs">
+			  <li class="nav-item">
+			    <a class="nav-link active" data-toggle="tab" href="#taskDetailTab1_{{forloop.counter}}">itself</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="tab" href="#taskDetailTab2_{{forloop.counter}}">continuity</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="tab" href="#taskDetailTab3_{{forloop.counter}}">consistency</a>
+			  </li>
+			</ul>
+			<div class="tab-content">
+			  <div class="tab-pane fade active show" id="taskDetailTab1_{{forloop.counter}}">
+{{value.itself | prettyJson3 | safe}}
+			  </div>
+			  <div class="tab-pane fade" id="taskDetailTab2_{{forloop.counter}}">
+{{value.continuity | prettyJson3 | safe}}
+			  </div>
+			  <div class="tab-pane fade" id="taskDetailTab3_{{forloop.counter}}">
+{{value.consistency | prettyJson3 | safe}}
+			  </div>
+			</div>      
+		
+		</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endfor %}  
+
+
+<div class="modal fade" id='appenvGlobalDetail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{xpinfo | get_item:"appenv_global"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
+        If you have modified you cycle after playing it, the informations there may be outdated...</p>
+		{{xpinfo | get_item:"appenv_global_details" | safe}}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id='appenvLamDetail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{xpinfo | get_item:"appenv_lam"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
+        If you have modified you cycle after playing it, the informations there may be outdated...</p>
+		{{xpinfo | get_item:"appenv_lam_details" | safe}}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id='appenvClimDetail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{xpinfo | get_item:"appenv_clim"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
+        If you have modified you cycle after playing it, the informations there may be outdated...</p>
+		{{xpinfo | get_item:"appenv_clim_details" | safe}}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id='commonenvDetail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{xpinfo | get_item:"commonenv"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
+        If you have modified you cycle after playing it, the informations there may be outdated...</p>
+		{{xpinfo | get_item:"commonenv_details" | safe}}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id='inputStoreGlobalDetail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{xpinfo | get_item:"input_store_global"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		The Global Store is just a folder that contains resources useful for the tests (files like observation buffers, varbc, sigmab, initial conditions,...)
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id='inputStoreLamDetail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{xpinfo | get_item:"input_store_lam"}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		The Local Store is just a folder that contains resources useful for the tests (files like observation buffers, varbc, sigmab, initial conditions,...)
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id='xpinfoDetail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">xpinfo details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+      {% for key in xpinfoKeys %}
+      <div class='row'>
+	      <div class='col-sm-4'>
+	      {{key | upper}}
+	      </div> 
+	      <div class='col-sm-8'>
+	      {{xpinfo| get_item:key |safe}}
+	      </div>       
+      </div> 
+
+      {% endfor %}      
+<!--       {{xpinfo}}
+       XPID: {{xpinfo.xpid }}<br>
+       REF : {{xpinfo.ref_xpid }}<br>
+       USECASE: {{xpinfo.usecase }}<br>
+       GIT_BRANCH: {{xpinfo.git_branch }}<br>
+       CYCLE: {{xpinfo.cycle }}<br>
+       INPUTSTORE: {{xpinfo.input_store }}<br>
+       INITIAL LAUCH TIME: {{xpinfo.initial_time_of_launch }}<br>
+       PURPOSE: {{xpinfo.purpose }}<br>
+ -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id='writeNoteModal'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Write a note on this task</h5>
+        <button id='closeNote' type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>You are about to write a note (a comment) that will be saved into the database</p>
+        <p>XPID: <strong>{{exp.xpid}}</strong></p>
+        <p>TASK: <strong id='noteTask'></strong></p>
+        <div class="form-group">
+          <label for="exampleTextarea">your comments here...</label>
+          <textarea class="form-control" id="noteTextarea" rows="10"></textarea>
+        </div>        
+      </div>
+      <div class="modal-footer">
+	        <button id="inputNotebtn" type="button" class="btn btn-primary">Save</button>
+	  </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="modal fade" id='saveFilterModal'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Save filter inside url</h5>
+        <button id='closeNote' type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	      <input class="form-control" id="readOnlyInput" type="text" placeholder="" readonly="">
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/tether.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.easing.min.js' %}"></script> 
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
+
+<script>
+$(document).ready( function () {
+	
+	/* 	$('#refresh').click(function () {
+			var mess = $(this).data('value');
+			var xpid = $(this).data('xpid');
+			console.log(mess);
+			$('#importWarning').text(mess);
+			$('#inputXPID').val(xpid);
+		});	 */
+		$('.writeNote').click(function () {
+			var task=$(this).data('value');
+			$('#noteTask').text(task);
+		});	
+	    $('#inputNotebtn').click(function () {
+	    	var xpid = "{{exp.xpid}}";
+	    	var task = $('#noteTask').text();
+	    	var message = $('#noteTextarea').val();
+	        $.ajax({
+			url: '/addNote/',
+	            data: {
+	              'xpid': xpid,
+	              'task':task,
+	              'message':message,
+	            },
+	            dataType: 'json',
+	            success: function (data) {
+	              if (data.error) {
+	                  
+	                  alert(data.error);
+	              }        
+	              if (data.message) {
+	            	  alert(data.message);
+	            	  $('#closeNote').click();
+	              }
+	            }
+	          });   
+	    });
+	    
+		var table1=$('#tableview1').DataTable({		
+			 "lengthMenu": [[-1], [ "All"]],
+			 fixedHeader: true,
+		  "language": {
+			    "zeroRecords": "No tasks corresponding to request",
+			    "search": "Filter",
+			  } ,
+			"order": [[ 1, "desc" ]],
+		});  
+		var tables=$('.customTables').DataTable({		
+			 "lengthMenu": [[-1], [ "All"]],
+			 fixedHeader: true,
+		  "language": {
+			    "zeroRecords": "No tasks corresponding to request",
+			    "search": "Filter",
+			  } ,
+			"order": [[ 0, "asc" ]],
+		});  
+		$('.filterClick').click(function () {
+			var filter = $(this).prop('value');
+			table1.search( filter ).draw();
+		});	
+	        $('.filterSave').click(function () {
+		    var url=window.location.href.split('?')[0];
+		    $("#readOnlyInput").val(url+'?filter='+$("#tableview1_filter input").val());
+		});
+		var url = new URL($(location).attr('href'));
+		var filterArg = url.searchParams.get("filter");
+	        if(filterArg){
+			table1.search( filterArg ).draw();
+		};
+
+	});
+
+</script>
+
+{% endblock %}
+
+    
+      
+
+</body>
+
+</html>

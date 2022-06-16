@@ -1,0 +1,165 @@
+{% extends "ciboulai.html" %}
+{% load static %}
+
+
+
+{% block mainContainer %}
+<div id='content'>
+<div>
+  <div class="card p-3">
+    <p>Quick filters</p>
+	<div id="accordion_filter" class="mb-3 mt-3">
+	  <div class="card">
+	    <div >
+	      <div class="card-body">
+		      <button value="forecast" class="btn filterClick">forecast</button>
+		      <button value="ensemble" class="btn filterClick">ensemble</button>
+		      <button value="adjoint" class="btn filterClick">adjoint</button>
+		      <button value="3D" class="btn filterClick">3D</button>
+		      <button value="4D" class="btn filterClick">4D</button>
+		      <button value="direct_jo" class="btn filterClick">direct_jo</button>
+		      <button value="lineartangent_test" class="btn filterClick">lineartangent_test</button>
+		      <button value="ecma2ccma" class="btn filterClick">ecma2ccma</button>
+		      <button value="screening" class="btn filterClick">screening</button>
+			  <button value="fullpos" class="btn filterClick">fullpos</button>
+			  <button value="dfi" class="btn filterClick">dfi</button>
+			  <button value="surfex" class="btn filterClick">surfex</button>
+			  <button value="LAM" class="btn filterClick">LAM</button>
+			  <button value="batodb" class="btn filterClick">batodb</button>
+			  <button value="minim" class="btn filterClick">minim</button>
+			  <button value="OOPS" class="btn filterClick">OOPS</button>
+			  <button value="CNT0" class="btn filterClick">CNT0</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>    
+    
+
+  <table id="tableview1" class="table table-hover">
+	  <thead>
+	    <tr>
+		<th scope="col"><span>TaskName</span></th>
+		<th scope="col"><span>Number of XPID</span></th>
+	                                      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Validated tasks' class='btn btn-success'>OK</button></th>
+                              <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks with differing results' class='btn btn-danger'>KO</button></th>
+                              <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Crashed tasks' class='btn btn-outline-danger'>Crashed</button></th>
+                              <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks with undefined status... To be checked' class='btn btn-warning'>?</button></th>
+                              <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks without an expert or without reference, to produce status. To be checked' class='btn btn-secondary'>NC</button></th>
+ 
+	    </tr>
+	  </thead>
+	  <tbody>
+		{% for key, value in tasksDict.items %}
+	    <tr class=''>
+	    <td><a href="/taskView/{{value.pk}}">{{key}}</a>
+	      </td>
+	      <td>{{value.count}}</td>
+	      <td>{{value.ok}}</td>
+	      <td>{{value.ko}}</td>
+	      <td>{{value.tc}}</td>
+	      <td>{{value.cr}}</td>
+	      <td>{{value.nc}}</td>
+
+	    </tr>	  
+	    {% endfor %}   
+	  </tbody>
+	</table>   
+    </div>  
+
+  
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/tether.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.easing.min.js' %}"></script> 
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
+
+<script>
+$(document).ready( function () {
+	
+	/* 	$('#refresh').click(function () {
+			var mess = $(this).data('value');
+			var xpid = $(this).data('xpid');
+			console.log(mess);
+			$('#importWarning').text(mess);
+			$('#inputXPID').val(xpid);
+		});	 */
+		$('.writeNote').click(function () {
+			var task=$(this).data('value');
+			$('#noteTask').text(task);
+		});	
+	    $('#inputNotebtn').click(function () {
+	    	var xpid = "{{exp.xpid}}";
+	    	var task = $('#noteTask').text();
+	    	var message = $('#noteTextarea').val();
+	        $.ajax({
+          	url: '/addNote/',
+	            data: {
+	              'xpid': xpid,
+	              'task':task,
+	              'message':message,
+	            },
+	            dataType: 'json',
+	            success: function (data) {
+	              if (data.error) {
+	                  
+	                  alert(data.error);
+	              }        
+	              if (data.message) {
+	            	  alert(data.message);
+	            	  $('#closeNote').click();
+	              }
+	            }
+	          });   
+	    });
+	    
+		var table1=$('#tableview1').DataTable({		
+			 "lengthMenu": [[-1], [ "All"]],
+			 fixedHeader: true,
+		  "language": {
+			    "zeroRecords": "No tasks corresponding to request",
+			    "search": "Filter",
+			  } ,
+			"order": [[ 1, "desc" ]],
+		});  
+		var tables=$('.customTables').DataTable({		
+			 "lengthMenu": [[-1], [ "All"]],
+			 fixedHeader: true,
+		  "language": {
+			    "zeroRecords": "No tasks corresponding to request",
+			    "search": "Filter",
+			  } ,
+			"order": [[ 0, "asc" ]],
+		});  
+		$('.filterClick').click(function () {
+			var filter = $(this).prop('value');
+			table1.search( filter ).draw();
+		});	
+	        $('.filterSave').click(function () {
+		    var url=window.location.href.split('?')[0];
+		    $("#readOnlyInput").val(url+'?filter='+$("#tableview1_filter input").val());
+		});
+		var url = new URL($(location).attr('href'));
+		var filterArg = url.searchParams.get("filter");
+	        if(filterArg){
+			table1.search( filterArg ).draw();
+		};
+
+	});
+
+</script>
+
+{% endblock %}
+
+    
+      
+
+</body>
+
+</html>

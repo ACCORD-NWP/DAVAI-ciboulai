@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block favicon %}
+  <link rel="SHORTCUT ICON" href="{% static 'logoCiboulai.png' %}" />
+{% endblock %}
+
+{% block appTitle %}
+  <title>Ciboulaï : Davaï visualisation </title>
+{% endblock %}
+{% block extraCss %}
+<link href="{% static 'css/customCiboulai.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet" type="text/css"> 
+
+{% endblock %}
+  
+{% block appBrand %}
+      <!-- Sidebar - Brand -->
+      <a class="text-center sidebar-brand d-flex" href="/">
+        <div class="sidebar-brand-text mx-3">
+          <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-seedling"></i>
+          </div>
+        </div>
+       Ciboulaï
+       </a>
+       <div><span class='text-center sidebar-brand text-dark'><i>Davaï visualisation</i></span></div>
+      
+{% endblock %}
+
+{% block helpBtn %}
+<a class="btn btn-warning" data-toggle="modal" data-target="#helpModal" href="#" >Documentation</a>
+{% endblock %}
+
+{% block appSidebar %}
+   <li class="nav-item">
+	   <a class='nav-link' href="/"><i class='fas fa-flask fa-fw'></i> View all XPID</a>
+   </li>
+   <li class="nav-item">
+	   <a class='nav-link' href="/allTasks"><i class='fas fa-tasks fa-fw'></i> View all tasks</a>
+   </li>
+   <li class="nav-item">
+	   <a class='nav-link' href="/lastTaskInstances"><i class='fas fa-th fa-fw'></i> View last task instances</a>
+   </li>
+   <li class="nav-item">
+	   <a class='nav-link' href="/notesview"><i class='fas fa-pencil-alt fa-fw'></i> View all notes</a>
+   </li>
+   <li class="nav-item">
+	   <a class='nav-link' href="#" data-toggle="modal" data-target="#expertsModal"><i class='fas fa-question fa-fw'></i> Information on experts</a>
+   </li>
+{% endblock %}
+
+
+{% block mainContainer %}
+
+        <!-- Begin Page Content -->
+        <div id='content' class="mt-4">
+
+          
+          <div>  
+	          <h2 class='d-inline'>
+	          References
+	          </h2>
+	          <div class="d-inline align-items-center justify-content-between mb-4">
+	          {% for c in gmapReferences %}
+				<a class='filterClick' href='#ref_{{c.ciboulexp.xpid}}'><button class="btn btn-outline"><strong>{{c.mainCycle}}</strong> : {{c.ciboulexp}} </button></a>
+			  {% endfor %} 
+	          </div>
+	      </div>
+          
+          <div>  
+           <div class='row'> 
+            <div class='col-sm-6'>
+                <h2 class="h3 mb-2 mt-2">Last tests</h2>
+	    </div> 
+            <div class='col-sm-6'>
+                <h2 class="h3 mb-2 mt-2">Pagination</h2>
+		  <ul class="pagination">
+		    {% for p in pageList %}
+		    {% if p == page %}
+		    <li class="page-item active">
+			    <a class="page-link" href="?page={{p}}">{{p}}</a>
+		    </li>
+		    {% else %}
+		    <li class="page-item">
+			    <a class="page-link" href="?page={{p}}">{{p}}</a>
+		    </li>
+		    {% endif %}
+		    {% endfor %}
+		  </ul>
+
+	    </div> 
+	   </div> 
+             <table id="tableFront" class="table table-hover">
+			  <thead>
+			    <tr>
+			      <th scope="col">XPID</th>
+			      <th scope="col">BASE CYCLE</th>
+			      <th scope="col">REF</th>
+			      <th scope="col">USER</th>
+			      <th scope="col">SUBMIT DATE</th>
+			      <th scope="col">LAST UPDATE</th>
+			      <th scope="col">USECASE</th>
+			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Validated tasks' class='btn btn-success'>OK</button></th>
+			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks with differing results' class='btn btn-danger'>KO</button></th>
+			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Crashed tasks' class='btn btn-outline-danger'>Crashed</button></th>
+			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks with undefined status... To be checked' class='btn btn-warning'>?</button></th>
+			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks without an expert or without reference, to produce status. To be checked' class='btn btn-secondary'>NC</button></th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	{% for exp in ciboulexps %}
+			  	
+			    <tr>
+			      
+			      <th scope="row"><a  data-html="true" data-delay='{ "show": 500, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" title='<ul><li>PACK : {{exp.xpinfo  | get_item:"pack" |safe}}</li><li>GIT_BRANCH : {{exp.xpinfo  | get_item:"git_branch" |safe}} </li><li>APPENV : {{exp.xpinfo  | get_item:"appenv" |safe}} </li><li>COMMONENV : {{exp.xpinfo  | get_item:"commonenv" |safe}} </li></ul>' 
+				  href="/lightView/{{exp.pk}}">{{exp.xpid}}</a> <br> <div style='max-width:250px;overflow-wrap: anywhere;'><small>{{exp.xpinfo | get_item:"comment" |safe}}</small></div> </th>
+			      <td>  <a class='filterClick' href='#ref_{{exp.xpinfo | base_cycle | safe}}'><button class="btn btn-outline">{{exp.xpinfo | base_cycle | safe}} </button></a>  </td>
+			      {% if exp.reference.pk is None  %}
+			      <td> - </td>
+			      {% else %}
+			      <td> <a href="/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></td>
+			      {% endif %}
+			      <td> <a class='filterClick' href='#ref_{{exp.user}}'><button class="btn btn-outline">{{exp.user}} </button></a>  </td>
+			      <td> {{exp.xpinfo | get_item:"initial_time_of_launch" | dateUpdate |safe}} </td>
+			      <td> {{exp.updated | date:"Y-m-d H:i:s" }} </td>
+			      <td> <a class='filterClick' href='#ref_{{exp.xpinfo | get_item:"usecase" |safe}}'><button class="btn btn-outline"> {{exp.xpinfo | get_item:"usecase" |safe}} </button></a> </td>
+			      {{exp.symbolSummary_ok| safe }} 
+			      {{exp.symbolSummary_ko| safe }} 
+			      {{exp.symbolSummary_cr| safe }} 
+			      {{exp.symbolSummary_tc| safe }} 
+			      {{exp.symbolSummary_nc| safe }} 
+			    </tr>
+			    
+			    {% endfor %} 
+
+			  </tbody>
+			</table> 
+
+          </div>
+
+ 
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+
+<div class="modal fade" id='expertsModal'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Informations on experts</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	<div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.fields.NormsChecker</h2><p class='card-text'><li>info : Read and compare the spectral/gridpoint norms of fields in listing.</li><li>values : ['norms']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>normstype_values : ['gpnorms', 'spnorms', 'both']</li><li>normstype_info : Select type of norms to be written in task summary.</li><li>normstype_optional : True</li><li>normstype_default : both</li><li>plot_spectral_info : Plot evolution of spectral norms difference (number of # digits) to SVG.</li><li>plot_spectral_optional : True</li><li>plot_spectral_default : False</li><li>output_info : Output listing file name to process.</li><li>output_optional : True</li><li>output_default : NODE.001_01</li><li>digits4validation_info : Maximum number of different digits in norms for validation.</li><li>digits4validation_optional : True</li><li>digits4validation_default : 0</li><li>mode_values : ['all', 'last', 'last_spectral']</li><li>mode_info : Tunes what is to be written in task summary, among: 'all': all norms | 'last': only last step norms | 'last_spectral': only the last step that contains spectral norms.</li><li>mode_optional : True</li><li>mode_default : last_spectral</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.oops.OOPSJoADExpert</h2><p class='card-text'><li>info : Read and compare *adjoint-test result* written by obs operator OOPS-test:test_adjoint in standard output file.</li><li>values : ['oops:op_obs_model/test_adjoint', 'oops:op_obs_file/test_adjoint']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>output_info : The text output file to parse.</li><li>output_optional : True</li><li>output_default : stdeo.0</li><li>digits_validation_threshold_info : Minimum value for the number of common digits in the JoAD-test.</li><li>digits_validation_threshold_optional : True</li><li>digits_validation_threshold_default : 10</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.assim.BatorObservationsCount</h2><p class='card-text'><li>info : Read and compare the numbers of observations archived by Bator in listings.</li><li>values : ['bator_obscount']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>output_info : Ignored attribute: files to process are automatically found in current directory.</li><li>output_optional : True</li><li>output_default : None</li><li>validation_threshold_info : Maximum difference in observation counts for validation.</li><li>validation_threshold_optional : True</li><li>validation_threshold_default : 1</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.fields.FieldsInFileExpert</h2><p class='card-text'><li>info : Read and compare the fields present in files.</li><li>values : ['fields_in_file']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>compute_stats_info : Compute (min, avg, max) when parsing fields.</li><li>compute_stats_optional : True</li><li>compute_stats_default : False</li><li>filenames_info : Filenames to process. If absent, will be determined according to reference resources and/or regular expressions on filenames.</li><li>filenames_optional : True</li><li>ignore_meta_info : Ignore fields metadata in comparison.</li><li>ignore_meta_optional : True</li><li>ignore_meta_default : False</li><li>hide_bit_repro_fields_info : Do not show bit-reproducible fields in comparison summary.</li><li>hide_bit_repro_fields_optional : True</li><li>hide_bit_repro_fields_default : True</li><li>ignore_orphan_fields_info : Ignore fields that are present in only one of the resources.</li><li>ignore_orphan_fields_optional : True</li><li>ignore_orphan_fields_default : False</li><li>normalized_validation_threshold_info : Threshold on normalized distance for validation. Normalized distance is computed as normalized(test, ref) - normalized(ref, ref) where normalized(test, ref) == (test-ref.min()) / (ref.max()-ref.min())</li><li>normalized_validation_threshold_optional : True</li><li>normalized_validation_threshold_default : 1e-12</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.oops.OOPSVariancesExpert</h2><p class='card-text'><li>info : Read and compare *variances* written by OOPS-test in standard output file.</li><li>values : ['oops:ensemble/read']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>variances_validation_threshold_info : Maximum value for the variances relative error.</li><li>variances_validation_threshold_optional : True</li><li>variances_validation_threshold_default : 1e-08</li><li>output_info : The text output file to parse.</li><li>output_optional : True</li><li>output_default : stdeo.0</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.profiling.DrHook</h2><p class='card-text'><li>info : DrHook profiling parser.</li><li>values : ['drHookMax', 'drHookAve']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.oops.OOPSJoTLExpert</h2><p class='card-text'><li>info : Read and compare *TL-test result* written by obs operator OOPS-test:test_tl in standard output file.</li><li>values : ['oops:op_obs_model/test_tl', 'oops:op_obs_file/test_tl']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>output_info : Output listing file name to process</li><li>output_optional : True</li><li>output_default : NODE.001_01</li><li>jo_validation_threshold_info : Maximum value for the Jo relative error.</li><li>jo_validation_threshold_optional : True</li><li>jo_validation_threshold_default : 1e-08</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.assim.JoTable</h2><p class='card-text'><li>info : Read and compare the Jo for each {obstype, sensor, parameter} in listing.</li><li>values : ['joTables']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>validation_thresholds_info : Thresholds on {Jo, Jo/n and n} for validation.</li><li>validation_thresholds_optional : True</li><li>validation_thresholds_default : {'jo': {'diff': 10, 'reldiff': 0.1}, 'jo/n': {'diff': 0.2, 'reldiff': 1.0}, 'n': {'diff': 1, 'reldiff': 0.1}}</li><li>output_info : Output listing file name to process.</li><li>output_optional : True</li><li>output_default : NODE.001_01</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.profiling.ParallelBatorProfile</h2><p class='card-text'><li>info : Analyses parallel_exec_synthesis.json produced by Bator.</li><li>values : ['bator_profile']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>synthesis_info : File name to process.</li><li>synthesis_optional : True</li><li>synthesis_default : parallel_exec_synthesis.json</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.assim.CanariStats</h2><p class='card-text'><li>info : Read and compare the canari increments from CANCER in listing.</li><li>values : ['canari_stats']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>output_info : Output listing file name to process.</li><li>output_optional : True</li><li>output_default : NODE.001_01</li><li>innovation_validation_threshold_info : Maximum value for the relative error in OBS-MOD</li><li>innovation_validation_threshold_optional : True</li><li>innovation_validation_threshold_default : 0.001</li><li>obscount_validation_threshold_info : Maximum difference in observation number</li><li>obscount_validation_threshold_optional : True</li><li>obscount_validation_threshold_default : 1</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.profiling.RSS</h2><p class='card-text'><li>info : RSS (memory) expert.</li><li>values : ['rss']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>ntasks_per_node_info : Number of MPI tasks per node. If not present, misses some statistics.</li><li>ntasks_per_node_optional : True</li><li>ntasks_per_node_default : None</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.oops.OOPSStateDiffExpert</h2><p class='card-text'><li>info : Read and compare *state difference* written by OOPS-test in standard output file.</li><li>values : ['oops:mix/test_model_direct', 'oops:mix/test_fields_change_resolution', 'oops:mix/test_external_dfi']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>statesdiff_validation_threshold_info : Maximum value for the 'States diff' relative error.</li><li>statesdiff_validation_threshold_optional : True</li><li>statesdiff_validation_threshold_default : 1e-06</li><li>output_info : The text output file to parse.</li><li>output_optional : True</li><li>output_default : stdeo.0</li></p></div></div><div class='card'><div class='card-body'><h2 class='card-title'>davai_tbx.experts.oops.OOPSJoExpert</h2><p class='card-text'><li>info : Read and compare *Jo* written by OOPS-test:test_hop_with_jo in standard output file.</li><li>values : ['oops:op_obs_model/test_hop_with_jo', 'oops:op_obs_file/test_hop_with_jo']</li><li>fatal_exceptions_info : Raise parsing/summary/compare errors.</li><li>fatal_exceptions_default : False</li><li>output_info : The text output file to parse.</li><li>output_optional : True</li><li>output_default : stdeo.0</li><li>jo_validation_threshold_info : Maximum value for the Jo relative error</li><li>jo_validation_threshold_optional : True</li><li>jo_validation_threshold_default : 1e-08</li></p></div></div>
+      </div>
+    </div>
+  </div>                
+</div> 
+
+
+      <!-- End of Main Content -->
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container">
+          <div class="row">
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Experiment tested</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{countExp}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-check-square fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Unit tests implemented</div>
+		      <div class="h5 mb-0 font-weight-bold text-gray-800">{{taskCount}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tasks tested</div>
+		      <div class="h5 mb-0 font-weight-bold text-gray-800">{{taskInstanceCount}}</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-th fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Pending Requests Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Bugs avoided</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">many</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-thumbs-up fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>      
+
+       </div>
+      </footer>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/tether.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/jquery.easing.min.js' %}"></script> 
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
+
+<script>
+$(document).ready( function () {
+
+
+	var tableFront=$('#tableFront').DataTable({
+			  "language": {
+				  "zeroRecords": "Experiment not found: have you Fetched your experiment ( top left button )?\n Warning: this search box searche only on the visibles lines... If your experiment is not there, your must browse in other pages with pagination buttons",
+				    "search": "Filter and experiment with XPID or cycle",
+				  },
+                  "lengthMenu": [[-1], [ "All"]],  
+                  "order": [[ 4, "desc" ]],
+	});   
+	
+	
+	$('.progress .progress-bar').css("width",
+	        function() {
+	        return $(this).attr("aria-valuenow") + "%";
+	    }
+	)
+	$('.filterClick').click(function () {
+		var xpid = $(this).prop('href').split("#ref_")[1];
+		tableFront.search( xpid ).draw();
+	});	
+});
+
+</script>
+
+{% endblock %}
+
+    
+      
+
+</body>
+
+</html>
+
