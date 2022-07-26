@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-p*h+d2h)8gl&d_4v#vu#wejofw0!uy#+yv#jgd37h#r@c*!tvh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sxcoope1.cnrm.meteo.fr']
 
 
 # Application definition
@@ -120,7 +120,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/suzat/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     )

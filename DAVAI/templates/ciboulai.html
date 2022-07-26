@@ -37,7 +37,7 @@
 	   <a class='nav-link' href="/"><i class='fas fa-flask fa-fw'></i> View all XPID</a>
    </li>
    <li class="nav-item">
-	   <a class='nav-link' href="/allTasks"><i class='fas fa-tasks fa-fw'></i> View all tasks</a>
+	   <a class='nav-link' href="/suzat/allTasks"><i class='fas fa-tasks fa-fw'></i> View all tasks</a>
    </li>
    <li class="nav-item">
 	   <a class='nav-link' href="/lastTaskInstances"><i class='fas fa-th fa-fw'></i> View last task instances</a>
@@ -114,7 +114,7 @@
 			    <tr>
 			      
 			      <th scope="row"><a  data-html="true" data-delay='{ "show": 500, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" title='<ul><li>PACK : {{exp.xpinfo  | get_item:"pack" |safe}}</li><li>GIT_BRANCH : {{exp.xpinfo  | get_item:"git_branch" |safe}} </li><li>APPENV : {{exp.xpinfo  | get_item:"appenv" |safe}} </li><li>COMMONENV : {{exp.xpinfo  | get_item:"commonenv" |safe}} </li></ul>' 
-				  href="/lightView/{{exp.pk}}">{{exp.xpid}}</a> <br> <div style='max-width:250px;overflow-wrap: anywhere;'><small>{{exp.xpinfo | get_item:"comment" |safe}}</small></div> </th>
+				  href="/suzat/lightView/{{exp.pk}}">{{exp.xpid}}</a> <br> <div style='max-width:250px;overflow-wrap: anywhere;'><small>{{exp.xpinfo | get_item:"comment" |safe}}</small></div> </th>
 			      <td>  <a class='filterClick' href='#ref_{{exp.xpinfo | base_cycle | safe}}'><button class="btn btn-outline">{{exp.xpinfo | base_cycle | safe}} </button></a>  </td>
 			      {% if exp.reference.pk is None  %}
 			      <td> - </td>
