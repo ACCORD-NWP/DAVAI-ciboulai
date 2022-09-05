@@ -1,0 +1,16 @@
+[2022-08-01 13:08:34 +0000] [1640020] [INFO] Starting gunicorn 20.1.0
+[2022-08-01 13:08:34 +0000] [1640020] [INFO] Listening at: http://127.0.0.1:8898 (1640020)
+[2022-08-01 13:08:34 +0000] [1640020] [INFO] Using worker: sync
+[2022-08-01 13:08:34 +0000] [1640021] [INFO] Booting worker with pid: 1640021
+[2022-08-01 13:08:34 +0000] [1640022] [INFO] Booting worker with pid: 1640022
+[2022-08-01 13:17:44 +0000] [1640022] [INFO] Worker exiting (pid: 1640022)
+[2022-08-01 13:17:44 +0000] [1640021] [INFO] Worker exiting (pid: 1640021)
+[2022-08-01 13:17:44 +0000] [1640020] [INFO] Handling signal: term
+[2022-08-01 13:17:44 +0000] [1640020] [WARNING] Worker with pid 1640021 was terminated due to signal 15
+[2022-08-01 13:17:44 +0000] [1640020] [WARNING] Worker with pid 1640022 was terminated due to signal 15
+[2022-08-01 13:17:44 +0000] [1640020] [INFO] Shutting down: Master
+[2022-08-01 13:17:51 +0000] [1640924] [INFO] Starting gunicorn 20.1.0
+[2022-08-01 13:17:51 +0000] [1640924] [INFO] Listening at: http://127.0.0.1:8898 (1640924)
+[2022-08-01 13:17:51 +0000] [1640924] [INFO] Using worker: sync
+[2022-08-01 13:17:51 +0000] [1640925] [INFO] Booting worker with pid: 1640925
+[2022-08-01 13:17:51 +0000] [1640926] [INFO] Booting worker with pid: 1640926

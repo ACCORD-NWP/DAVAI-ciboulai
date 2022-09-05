@@ -38,26 +38,26 @@
 <div class='row bg-light' style="border-bottom: 5px solid;">
     <div class='col-md-6'>
 	    <ul class='list-unstyled' style="line-height: 200%;"><strong>
-<li class='row'><span class='col-md-2'>PACK :</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"pack" | safe }} </span></li>
-<li class='row'><span class='col-md-2'>USER :</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"user" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>IAL_git_ref :</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"ial_git_ref" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>tests_version :</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"tests_version" | safe }} </span></li>
   {% if exp.reference.pk is None  %}
 <li class='row'><span class='col-md-2'>No Reference</span></li>
   {% else %}
-  <li class='row'><span class='col-md-2'>REF :</span><span class='offset-md-1 col-md-9'><a href="/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
+  <li class='row'><span class='col-md-2'>ref_xpid :</span><span class='offset-md-1 col-md-9'><a href="/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
   {% endif %}
-<li class='row'><span class='col-md-2'>USECASE : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"usecase" | safe }} </span></li>
-<li class='row'><span class='col-md-2'>GIT_BRANCH : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"git_branch" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>usecase : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"usecase" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>compilation_system : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"compilation_system" | safe }} </span></li>
 		    </strong></ul>
     </div>
     <div class='col-md-6'>
      <ul class='list-unstyled'>
         {% if xpinfo|newappenv %}
-         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvGlobalDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>APPENV_GLOBAL:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_global" | safe }}</span> </li>
-        <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvLamDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>APPENV_LAM:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_lam" | safe }}</span></li>
-         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvClimDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>APPENV_CLIM:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_clim" | safe }}</span></li>
-        <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#commonenvDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>COMMONENV:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"commonenv" | safe }}</span></li>
-      <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreGlobalDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>INPUT_STORE_GLOBAL:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"input_store_global" | safe }}</span></li>
-      <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreLamDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>INPUT_STORE_LAM:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"input_store_lam" | safe }}</span></li>
+         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#commonenvDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>commonenv:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"commonenv" | safe }}</span></li>
+         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvGlobalDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>appenv_global:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_global" | safe }}</span> </li>
+	 <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvLamDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>appenv_lam:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_lam" | safe }}</span></li>
+         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvClimDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>appenv_clim:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_clim" | safe }}</span></li>
+      <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreGlobalDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>input_shelf_global:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"input_shelf_global" | safe }}</span></li>
+      <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreLamDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>input_shelf_lam:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"input_shelf_lam" | safe }}</span></li>
       {% else %}
       <p class='text-warning'>Warning : this display is broken for old experiments, the problem will disapear in recent davaï experiments...</p>
       <li>{{xpinfo | get_item:"appenv" | safe }} <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvDetail" ><i class="fas fa-fw fa-plus"></i></a></li>
