@@ -23,9 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insuieueeuieauie,a,c,e#jgd37h#r@c*!tvh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+#DEBUG = True
+myhost = os.uname()[1]
 
-ALLOWED_HOSTS = ['sxcoope1.cnrm.meteo.fr','b5d045e6a2d7d567c0f95b76806cc81b.suzat.fr']
+DEBUG = myhost=="sxobs1"
+
+ALLOWED_HOSTS = ['www-davai.umr-cnrm.fr','www-davai.cnrm.meteo.fr']
 
 
 # Application definition
@@ -120,7 +123,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/davaistatic/static/'
+#STATIC_URL = '/static/'
 STATIC_ROOT = "/home/b5d045e6a2d7d567c0f95b76806cc81b/static/"
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),

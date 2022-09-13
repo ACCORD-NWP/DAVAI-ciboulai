@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.Front, name='Front'),
+    path('tata', views.Front, name='Front'),
     path('allTasks', views.AllTasks, name='AllTasks'),
     path('lastTaskInstances', views.LastTaskInstances, name='LastTaskInstances'),
     path('view/<int:cid>', views.CiboulexpView, name='CiboulexpView'),
