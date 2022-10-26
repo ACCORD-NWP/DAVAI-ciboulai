@@ -17,7 +17,7 @@
 	  <tbody>
 		{% for task in taskInstancesList %}
 	    <tr class=''>
-		    <td><a href="/lightView/{{task.expRef.pk}}?filter={{task.taskRef.name}}">{{task.taskRef.name}}</a></td>
+		    <td><a href="/davai/lightView/{{task.expRef.pk}}?filter={{task.taskRef.name}}">{{task.taskRef.name}}</a></td>
               <td>{{task.expRef.xpid}}</td>
 	      <td>{{task.updated}}</td>
 

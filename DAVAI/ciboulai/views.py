@@ -4,9 +4,10 @@ from django.http import Http404
 from django.http import JsonResponse
 from .tasks import updateCiboulexp
 import json
+
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
-
+import os
 from template_tags.custom_tags import prettyJson3
 
 
@@ -272,16 +273,22 @@ def api(request):
         xpid = str(request.POST.get('xpid', None))
         jsonData = str(request.POST.get('jsonData', None))
         type = str(request.POST.get('type', None))
+        pwd = request.POST.get('token', None)
+        if pwd and os.getenv('DAVAI_POST_PWD') and pwd==os.getenv('DAVAI_POST_PWD'):
+            message+="Token is OK!"
+        else:
+            message+="Token is not present or not good (for the moment this is not a problem)....\n"
+            
         if type=="xpinfo":
             #check if jsonData seems ok
             jsonDict=json.loads(jsonData)
             if not "xpinfo" in jsonDict:
                 rc=1
-                message="The json provided do not contains xpinfo key"
+                message+="The json provided do not contains xpinfo key"
             else:
                 returnDict=updateCiboulexp(jsonDict.get('xpinfo'),fromFile=False)             
                 rc=returnDict.get('rc')
-                message=returnDict.get('message')
+                message+=returnDict.get('message')
                 message+="XPID: %s"%returnDict.get('xpid')
                 
         elif type in ['taskinfo','task','statictaskinfo'] :
@@ -319,16 +326,16 @@ def api(request):
                     
             else:
                 rc=1
-                message="The XPID %s do not exists. You need to call xpinfo task first with type='xpinfo'"%(xpid)
+                message+="The XPID %s do not exists. You need to call xpinfo task first with type='xpinfo'"%(xpid)
 
         else:
             rc=-2
-            message="Type (3 argument) must be 'xpinfo' or 'task'"            
+            message+="Type (3 argument) must be 'xpinfo' or 'task'"            
         
 
     else:
         rc=-1
-        message="This url only accepts POST and not GET: fail! "
+        message+="This url only accepts POST and not GET: fail! "
     
     return JsonResponse({
         'returnCode':rc,

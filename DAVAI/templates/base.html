@@ -42,59 +42,12 @@
           {% endblock %}
       </div>
 {% block appBrand %}
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/gws">
-	       <div class="sidebar-brand-icon">
-	         <i class="fas fa-tools"></i>
-	       </div>
-	       <div class="sidebar-brand-text mx-3">GWS - Gmap Web Service</div>
-        </a>
-	<div class="sidebar-bottom">made with <i class='fas fa-heart'></i><br>powered by: <ul><li> <a class='badge badge-success' href='https://www.djangoproject.com/'>Django</a></li><li> <a class='badge badge-success' href='https://d3js.org/'>d3js</a></li><li><a class='badge badge-success' href='https://getbootstrap.com/'>bootstrap</a></li></ul> <hr /> Florian Suzat
-        </div>
 {% endblock %}
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
       
 {% block appSidebar %}
-
-      <li class="nav-item">
-	      <a class="nav-link" href="{{root}}/gws/davai">
-          <i class="fas fa-fw fa-seedling"></i>
-          <span>Ciboulaï</span></a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{root}}/gws/drhack">
-          <i class="fas fa-fw fa-project-diagram"></i>
-          <span>DrHack</span></a>
-      </li>
-      {% if onsxobs1 %}
-      <li class="nav-item">
-        <a class="nav-link" href="{{root}}/gws/jobar">
-          <i class="fas fa-fw fa-chart-bar"></i>
-          <span>JoBar</span></a>
-      </li>
-      <li class="nav-item">
-          <a class="nav-link" href="{{root}}/gws/voirbc">
-          <i class="fas fa-fw fa-chart-line"></i>
-          <span>VoirBc</span></a>
-      </li>
-      {% endif %}
-      <li class="nav-item">
-	      <a class="nav-link" href="{{root}}/gws/weightWatchers">
-          <i class="fas fa-fw fa-weight"></i>
-          <span>WeightWatcher</span></a>
-      </li>
-      <li class="nav-item">
-	      <a class="nav-link" href="{{root}}/gws/wtg">
-          <i class="fas fa-fw fa-question"></i>
-          <span>What the grib</span></a>
-      </li>            
-      <li class="nav-item">
-          <a class="nav-link" href="{{root}}/gws/diff">
-          <i class="fas fa-fw fa-laptop-code"></i>
-          <span>Diff</span></a>
-      </li>            
       
 {% endblock %}
       
@@ -104,47 +57,10 @@
     
     <!-- End of Sidebar -->
   {% block mainContainer %}
-  <!-- Content Wrapper -->
-  <div id="content-wrapper" class="d-flex flex-column bg-dark">
-    <!-- Main Content -->
-    <div id="content" style='margin-left:225px;'> 
-      <img src="{% static 'penrose.gif' %}" class="penrose"></img>
-
-    </div>
-  </div>   
-
   
   {% endblock %}
 
   
-<div class="modal fade" id='contactModal'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Signaler un problème</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        {% for field in contactForm %}
-		 <fieldset id="fieldset_{{ field.name }}">
-		     <div class="form-group">                       
-		         {{ field.label_tag }} {{ field | safe}}
-		         {% if field.help_text %}
-		         <p class="help">{{ field.help_text|safe }}</p>
-		         {% endif %}
-		     </div>
-		 </fieldset>
-		 {% endfor %}
-        <label></label>
-		<a href='#' id='contactSend' class='btn btn-block btn-success'>Envoyer</a>
-      </div>
-    </div>
-  </div>
-</div>  
-
-
 {% block scripts %}
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/tether.min.js' %}"></script>
@@ -160,21 +76,6 @@
 <script>
 $('[data-toggle="popover"]').popover();
 $('[data-toggle="tooltip"]').tooltip();
-
-$("#contactSend").click(function () {
-    $.ajax({
-      url: '{{root}}/gws/contactJson/',
-      data: {
-        'text': $("#id_message").val(),
-        'mail': $("#id_de").val(),
-      },
-      dataType: 'json',
-      success: function (data) {
-          alert(data.message);
-          $('#contactModal').modal('toggle');
-      }
-      });
-  });
 </script>
 </body>
 

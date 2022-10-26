@@ -27,8 +27,13 @@ SECRET_KEY = 'django-insuieueeuieauie,a,c,e#jgd37h#r@c*!tvh'
 myhost = os.uname()[1]
 
 DEBUG = myhost=="sxobs1"
+if myhost=="sxobs1":
+    dbname="sxobs1.sqlite3"
+else:
+    dbname="db.sqlite3"
+#DEBUG = True
 
-ALLOWED_HOSTS = ['www-davai.umr-cnrm.fr','www-davai.cnrm.meteo.fr']
+ALLOWED_HOSTS = ['www-davai.umr-cnrm.fr','www-davai.cnrm.meteo.fr','0.0.0.0']
 
 
 # Application definition
@@ -84,7 +89,7 @@ WSGI_APPLICATION = 'DAVAI.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / dbname,
     }
 }
 

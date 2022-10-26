@@ -32,8 +32,8 @@
 	  </thead>
 	  <tbody>
 		{% for ti in tasksInstances %}
-		<td class=''><strong><a href="/lightView/{{ti.expRef.pk}}">{{ti.expRef.xpid}}</a></strong> (<small>{{ti.expRef.xpinfo | get_item:"comment" | safe }}</small>)
-			<a class='float-right' href="/admin/ciboulai/taskinstance/{{ti.pk}}/change/"><i class="fas fa-fw fa-user-lock"></i></a>
+		<td class=''><strong><a href="/davai/lightView/{{ti.expRef.pk}}">{{ti.expRef.xpid}}</a></strong> (<small>{{ti.expRef.xpinfo | get_item:"comment" | safe }}</small>)
+			<a class='float-right' href="/davai/admin/ciboulai/taskinstance/{{ti.pk}}/change/"><i class="fas fa-fw fa-user-lock"></i></a>
 	      </td>
 	      <td>{{ti.expRef.xpinfo | base_cycle | safe }}</td>
 	      <td>{{ti.expRef.user | safe }}</td>

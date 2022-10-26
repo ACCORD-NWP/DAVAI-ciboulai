@@ -10,7 +10,7 @@
 <div id='content'>
 <div class='row bg-light'>
 	<div class="col-md-6 text-center" style="border: 5px solid;padding: 34px;">
-		<h2><strong><a href="/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> (<small>{{xpinfo | get_item:"comment" | safe }}</small>) <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2></div>
+		<h2><strong><a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> (<small>{{xpinfo | get_item:"comment" | safe }}</small>) <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2></div>
 <div class='col-md-6'>
   <table class="table text-center">
 	  <thead>
@@ -43,7 +43,7 @@
   {% if exp.reference.pk is None  %}
 <li class='row'><span class='col-md-2'>No Reference</span></li>
   {% else %}
-  <li class='row'><span class='col-md-2'>ref_xpid :</span><span class='offset-md-1 col-md-9'><a href="/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
+  <li class='row'><span class='col-md-2'>ref_xpid :</span><span class='offset-md-1 col-md-9'><a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
   {% endif %}
 <li class='row'><span class='col-md-2'>usecase : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"usecase" | safe }} </span></li>
 <li class='row'><span class='col-md-2'>compilation_system : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"compilation_system" | safe }} </span></li>
@@ -69,7 +69,7 @@
     </div>
 </div>
 
-<p>{{notes | length}} notes on <a href="/lightView/{{exp.pk}}">{{exp.xpid}}</a><a  href="#"  data-value="XP" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a global comment about this experiment!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a></p><p>{{notes | note_btn:"XP" | safe }}</p>
+<p>{{notes | length}} notes on <a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a><a  href="#"  data-value="XP" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a global comment about this experiment!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a></p><p>{{notes | note_btn:"XP" | safe }}</p>
   <div class="card p-3">
     <p>Quick filters</p>
     <div>
@@ -120,7 +120,7 @@
 	  <tbody>
 		{% for key, value in globalDico.items %}
 	    <tr class=''>
-		    <td><a href="/taskView/{{key.pk}}" >{{key}}</a>
+		    <td><a href="/davai/taskView/{{key.pk}}" >{{key}}</a>
 	      <a  href="#"  data-value="{{key}}" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a comment about this task!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a>
 	      {{notes | note_btn:key.name | safe}}
 

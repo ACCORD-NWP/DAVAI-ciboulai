@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block favicon %}
-  <link rel="SHORTCUT ICON" href="{% static 'logoCiboulai.png' %}" />
+  <link rel="SHORTCUT ICON" href="{% static 'images/logoCiboulai.png' %}" />
 {% endblock %}
 
 {% block appTitle %}
@@ -16,7 +16,7 @@
   
 {% block appBrand %}
       <!-- Sidebar - Brand -->
-      <a class="text-center sidebar-brand d-flex" href="/suzat">
+      <a class="text-center sidebar-brand d-flex" href="/davai/">
         <div class="sidebar-brand-text mx-3">
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-seedling"></i>
@@ -34,16 +34,16 @@
 
 {% block appSidebar %}
    <li class="nav-item">
-	   <a class='nav-link' href="/"><i class='fas fa-flask fa-fw'></i> View all XPID</a>
+	   <a class='nav-link' href="/davai/"><i class='fas fa-flask fa-fw'></i> View all XPID</a>
    </li>
    <li class="nav-item">
-	   <a class='nav-link' href="/suzat/allTasks"><i class='fas fa-tasks fa-fw'></i> View all tasks</a>
+	   <a class='nav-link' href="/davai/allTasks"><i class='fas fa-tasks fa-fw'></i> View all tasks</a>
    </li>
    <li class="nav-item">
-	   <a class='nav-link' href="/lastTaskInstances"><i class='fas fa-th fa-fw'></i> View last task instances</a>
+	   <a class='nav-link' href="/davai/lastTaskInstances"><i class='fas fa-th fa-fw'></i> View last task instances</a>
    </li>
    <li class="nav-item">
-	   <a class='nav-link' href="/notesview"><i class='fas fa-pencil-alt fa-fw'></i> View all notes</a>
+	   <a class='nav-link' href="/davai/notesview"><i class='fas fa-pencil-alt fa-fw'></i> View all notes</a>
    </li>
    <li class="nav-item">
 	   <a class='nav-link' href="#" data-toggle="modal" data-target="#expertsModal"><i class='fas fa-question fa-fw'></i> Information on experts</a>
@@ -55,7 +55,6 @@
 
         <!-- Begin Page Content -->
         <div id='content' class="mt-4">
-
           
           <div>  
 	          <h2 class='d-inline'>
@@ -114,12 +113,12 @@
 			    <tr>
 			      
 			      <th scope="row"><a  data-html="true" data-delay='{ "show": 500, "hide": 100 }' data-toggle="tooltip" data-placement="bottom" title='<ul><li>PACK : {{exp.xpinfo  | get_item:"pack" |safe}}</li><li>GIT_BRANCH : {{exp.xpinfo  | get_item:"git_branch" |safe}} </li><li>APPENV : {{exp.xpinfo  | get_item:"appenv" |safe}} </li><li>COMMONENV : {{exp.xpinfo  | get_item:"commonenv" |safe}} </li></ul>' 
-				  href="/suzat/lightView/{{exp.pk}}">{{exp.xpid}}</a> <br> <div style='max-width:250px;overflow-wrap: anywhere;'><small>{{exp.xpinfo | get_item:"comment" |safe}}</small></div> </th>
+				  href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a> <br> <div style='max-width:250px;overflow-wrap: anywhere;'><small>{{exp.xpinfo | get_item:"comment" |safe}}</small></div> </th>
 			      <td>  <a class='filterClick' href='#ref_{{exp.xpinfo | base_cycle | safe}}'><button class="btn btn-outline">{{exp.xpinfo | base_cycle | safe}} </button></a>  </td>
 			      {% if exp.reference.pk is None  %}
 			      <td> - </td>
 			      {% else %}
-			      <td> <a href="/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></td>
+			      <td> <a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></td>
 			      {% endif %}
 			      <td> <a class='filterClick' href='#ref_{{exp.user}}'><button class="btn btn-outline">{{exp.user}} </button></a>  </td>
 			      <td> {{exp.xpinfo | get_item:"initial_time_of_launch" | dateUpdate |safe}} </td>
