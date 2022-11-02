@@ -84,62 +84,11 @@ def LastTaskInstances(request):
     }
     return render(request, template, context)
     
-
-
-def CiboulexpView(request,cid):
-    template = 'ciboulaiView.html'
-    if Ciboulexp.objects.filter(pk=cid).exists():
-        exp=Ciboulexp.objects.get(pk=cid)
-        #----
-#        globalDico=json.loads(exp.json)
-
-        globalDico2={}
-        for ti in TaskInstance.objects.filter(expRef=exp):
-            try:
-                td=json.loads(ti.jsonTask)
-            except:
-                td={'error':'error in json.loads'}
-
-            globalDico2[ti.taskRef]=td
-        #----
-
-        headers=['task','last update','status','comparison status','main metric','value','drHook rel diff','rss rel diff','more']
-        xpinfoKeys=['user','xpid','ref_xpid','pack','git_branch','appenv','appenv_global','appenv_lam','appenv_clim','commonenv','input_store','input_store_lam','input_store_global','initial_time_of_launch','comment','usecase']
-
-        headersSolo=[]
-  
-        notes={}
-        for n in Note.objects.filter(xpid=exp.xpid):
-            if n.task in notes.keys():
-                notes[n.task].append(n.message)
-            else:
-                notes[n.task]=[n.message]
-        try:
-            xpinfo=json.loads(exp.xpinfo)
-        except:
-            xpinfo={}
-        context = {
-            'exp':exp,
-            'xpinfo':xpinfo,
-#            'solo':globalDico,
-            'globalDico':globalDico2,
-            'headers':headers,
-            'headersSolo':headersSolo,
-            'notes':notes,
-            'xpinfoKeys':xpinfoKeys,
-             }
-        
-        return render(request, template, context)
-        
-    else:
-        raise Http404("Page does not exist") 
     
 def CiboulexpLightView(request,cid):
     template = 'ciboulaiLightView.html'
     if Ciboulexp.objects.filter(pk=cid).exists():
         exp=Ciboulexp.objects.get(pk=cid)
-        #----
-#        globalDico=json.loads(exp.json)
     
         globalDico2={}
         for ti in TaskInstance.objects.filter(expRef=exp):
@@ -153,7 +102,6 @@ def CiboulexpLightView(request,cid):
         #----
 
         headers=['task','last update','status','comparison status','main metric','value','drHook rel diff','rss rel diff','more']
-        xpinfoKeys=['user','xpid','ref_xpid','pack','git_branch','appenv','appenv_global','appenv_lam','appenv_clim','commonenv','input_store','input_store_lam','input_store_global','initial_time_of_launch','comment','usecase']
 
         headersSolo=[]
   
@@ -167,6 +115,12 @@ def CiboulexpLightView(request,cid):
             xpinfo=json.loads(exp.xpinfo)
         except:
             xpinfo={}
+        xpinfoKeys=list(xpinfo.keys())
+        for it in ['appenv_lam_details', 'appenv_clim_details', 'appenv_global_details', 'commonenv_details']: # to hide
+            xpinfoKeys.remove(it)
+        xpinfoKeys.sort()
+        headenv=['appenv_global','appenv_lam','appenv_fullpos_partners','appenv_clim','commonenv','input_shelf_global','input_shelf_lam']
+        filterClick=["forecast","ensemble","adjoint","3D","4D","obs_op","ecma2ccma","screening","fullpos","dfi","surfex","LAM","batodb","minim","OOPS","CNT0"]
         context = {
             'exp':exp,
             'xpinfo':xpinfo,
@@ -176,6 +130,8 @@ def CiboulexpLightView(request,cid):
             'headersSolo':headersSolo,
             'notes':notes,
             'xpinfoKeys':xpinfoKeys,
+            'headenv':headenv,
+            'filterClick':filterClick,
              }
         
         return render(request, template, context)
@@ -250,20 +206,6 @@ def ajaxLoadModal(request):
             'error':error,
             })        
         
-def importFile(request):
-    if request.method == 'POST':
-        q=request.FILES['file']
-        globalDict=json.loads(q.read().decode('utf-8'))
-        xpinfo=globalDict.pop("xpinfo")
-#        reponseDict=updateCiboulexp(xpinfo,fromFile=True,dictJson=globalDict)
-        if reponseDict.get('error'):
-            raise Http404(reponseDict.get('error')) 
-        else:
-            return redirect(reponseDict.get('redirect'))
-
-
-
-
 
 @csrf_exempt
 def api(request):
@@ -317,10 +259,6 @@ def api(request):
                         ti.save()
                         message+="The task %s on xpid %s has successfully been created into ciboulaï database!"%(task,xpid)
                     ti.updateSymbol()
-#                globalDico2={}
-#                for ti in TaskInstance.objects.filter(expRef=exp):
-#                    globalDico2[ti.taskRef]=json.loads(ti.jsonTask)
-#                exp.summary=generateSummaryString(globalDico2)
                 exp.save()
                 rc=0
                     

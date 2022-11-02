@@ -202,6 +202,28 @@ def get_item(dictionary, key):
     else:
         return 'none'
 
+
+@register.filter
+def get_itemdetails(dictionary, key):
+    if 'shelf' in key:
+        return 'The shelf is just a folder that contains resources useful for the tests (files like observation buffers, varbc, sigmab, initial conditions,...)'
+
+    t=str(type(dictionary))
+    if 'str' in t:
+        try:
+            d=json.loads(dictionary)
+        except:
+            return 'ERROR get item, json load'
+        if hasattr(d, 'keys'):
+            return d.get(key+"_details")
+        else:
+            return 'ERROR get item'
+    elif 'dict' in t:
+        return dictionary.get(key+"_details")
+    else:
+        return 'none'
+
+
 @register.filter
 def prettyJson(dictionary):
 

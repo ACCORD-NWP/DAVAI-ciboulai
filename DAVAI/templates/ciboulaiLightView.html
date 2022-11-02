@@ -10,7 +10,7 @@
 <div id='content'>
 <div class='row bg-light'>
 	<div class="col-md-6 text-center" style="border: 5px solid;padding: 34px;">
-		<h2><strong><a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> (<small>{{xpinfo | get_item:"comment" | safe }}</small>) <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2></div>
+		<h2><strong><a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2><h3><small>{{xpinfo | get_item:"comment" | safe }}</small></h3></div>
 <div class='col-md-6'>
   <table class="table text-center">
 	  <thead>
@@ -38,33 +38,26 @@
 <div class='row bg-light' style="border-bottom: 5px solid;">
     <div class='col-md-6'>
 	    <ul class='list-unstyled' style="line-height: 200%;"><strong>
-<li class='row'><span class='col-md-2'>IAL_git_ref :</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"ial_git_ref" | safe }} </span></li>
-<li class='row'><span class='col-md-2'>tests_version :</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"tests_version" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>ial_git_ref:</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"ial_git_ref" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>usecase:</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"usecase" | safe }} </span></li>
   {% if exp.reference.pk is None  %}
-<li class='row'><span class='col-md-2'>No Reference</span></li>
+<li class='row'><span class='col-md-2'>ref_vconf:</span><span class='offset-md-1 col-md-9'>No reference</span></li>
   {% else %}
-  <li class='row'><span class='col-md-2'>ref_xpid :</span><span class='offset-md-1 col-md-9'><a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
+  <li class='row'><span class='col-md-2'>ref_xpid:</span><span class='offset-md-1 col-md-9'><a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
   {% endif %}
-<li class='row'><span class='col-md-2'>usecase : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"usecase" | safe }} </span></li>
-<li class='row'><span class='col-md-2'>compilation_system : </span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"compilation_system" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>ref_vconf:</span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"ref_vconf" | safe }} </span></li>
+<li class='row'><span class='col-md-2'>tests_version:</span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"tests_version" | safe }} </span></li>
 		    </strong></ul>
     </div>
     <div class='col-md-6'>
      <ul class='list-unstyled'>
-        {% if xpinfo|newappenv %}
-         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#commonenvDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>commonenv:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"commonenv" | safe }}</span></li>
-         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvGlobalDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>appenv_global:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_global" | safe }}</span> </li>
-	 <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvLamDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>appenv_lam:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_lam" | safe }}</span></li>
-         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvClimDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>appenv_clim:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"appenv_clim" | safe }}</span></li>
-      <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreGlobalDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>input_shelf_global:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"input_shelf_global" | safe }}</span></li>
-      <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreLamDetail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>input_shelf_lam:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:"input_shelf_lam" | safe }}</span></li>
-      {% else %}
-      <p class='text-warning'>Warning : this display is broken for old experiments, the problem will disapear in recent davaï experiments...</p>
-      <li>{{xpinfo | get_item:"appenv" | safe }} <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#appenvDetail" ><i class="fas fa-fw fa-plus"></i></a></li>
-      <li>common: {{xpinfo | get_item:"commonenv" | safe }}<a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#commonenvDetail" ><i class="fas fa-fw fa-plus"></i></a></li>
-      <li>store: {{xpinfo | get_item:"input_store" | safe }}<a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#inputStoreDetail" ><i class="fas fa-fw fa-plus"></i></a></li>
-      {% endif %}
-
+       {% for i in headenv %}
+         {% if i == "input_shelf_global" %}
+         <hr />
+         {% endif %}
+         
+         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#{{i}}Detail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>{{i}}:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:i | safe }}</span></li>
+       {% endfor %}
      </ul>
     </div>
 </div>
@@ -194,105 +187,26 @@
 {% endfor %}  
 
 
-<div class="modal fade" id='appenvGlobalDetail'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{xpinfo | get_item:"appenv_global"}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
-        If you have modified you cycle after playing it, the informations there may be outdated...</p>
-		{{xpinfo | get_item:"appenv_global_details" | safe}}
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id='appenvLamDetail'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{xpinfo | get_item:"appenv_lam"}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
-        If you have modified you cycle after playing it, the informations there may be outdated...</p>
-		{{xpinfo | get_item:"appenv_lam_details" | safe}}
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id='appenvClimDetail'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{xpinfo | get_item:"appenv_clim"}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
-        If you have modified you cycle after playing it, the informations there may be outdated...</p>
-		{{xpinfo | get_item:"appenv_clim_details" | safe}}
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id='commonenvDetail'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{xpinfo | get_item:"commonenv"}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
-        If you have modified you cycle after playing it, the informations there may be outdated...</p>
-		{{xpinfo | get_item:"commonenv_details" | safe}}
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id='inputStoreGlobalDetail'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{xpinfo | get_item:"input_store_global"}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-		The Global Store is just a folder that contains resources useful for the tests (files like observation buffers, varbc, sigmab, initial conditions,...)
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id='inputStoreLamDetail'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{xpinfo | get_item:"input_store_lam"}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-		The Local Store is just a folder that contains resources useful for the tests (files like observation buffers, varbc, sigmab, initial conditions,...)
-      </div>
-    </div>
-  </div>
-</div>
 
+{% for i in headenv %}
+<div class="modal fade" id='{{i}}Detail'>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{xpinfo | get_item:i}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
+        If you have modified you cycle after playing it, the informations there may be outdated...</p>
+                {{xpinfo | get_itemdetails:i | safe}}
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
 
 <div class="modal fade" id='xpinfoDetail'>
   <div class="modal-dialog" role="document">
@@ -316,16 +230,6 @@
       </div> 
 
       {% endfor %}      
-<!--       {{xpinfo}}
-       XPID: {{xpinfo.xpid }}<br>
-       REF : {{xpinfo.ref_xpid }}<br>
-       USECASE: {{xpinfo.usecase }}<br>
-       GIT_BRANCH: {{xpinfo.git_branch }}<br>
-       CYCLE: {{xpinfo.cycle }}<br>
-       INPUTSTORE: {{xpinfo.input_store }}<br>
-       INITIAL LAUCH TIME: {{xpinfo.initial_time_of_launch }}<br>
-       PURPOSE: {{xpinfo.purpose }}<br>
- -->
       </div>
     </div>
   </div>
@@ -363,7 +267,6 @@
       <div class="modal-header">
         <h5 class="modal-title">Save filter inside url</h5>
         <button id='closeNote' type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
@@ -403,7 +306,7 @@ $(document).ready( function () {
 	    	var task = $('#noteTask').text();
 	    	var message = $('#noteTextarea').val();
 	        $.ajax({
-			url: '/addNote/',
+			url: '/davai/addNote/',
 	            data: {
 	              'xpid': xpid,
 	              'task':task,
@@ -462,7 +365,7 @@ $(document).ready( function () {
 			var modalId = $(this).prop('id').split('_')[1];
 			$('body').addClass('cursorWait');
 	        $.ajax({
-			url: '/ajaxLoadModal/',
+			url: '/davai/ajaxLoadModal/',
 	            data: {
 	              'ciboulexpId': {{exp.pk}},
 	              'modalId':modalId,
