@@ -11,6 +11,7 @@
 {% block extraCss %}
 <link href="{% static 'css/customCiboulai.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet" type="text/css"> 
+<link href="{% static 'css/easy-autocomplete.min.css' %}" rel="stylesheet" type="text/css">
 
 {% endblock %}
   
@@ -55,7 +56,11 @@
 
         <!-- Begin Page Content -->
         <div id='content' class="mt-4">
-          
+  	    <div id="scrollable-dropdown-menu" class='d-inline'>
+	<input style='z-index:100;' id="provider-json" class='form-control' type="text" placeholder="Search xpid" data-target='jsoneditorFields' />
+            </div>
+
+        <!--  
           <div>  
 	          <h2 class='d-inline'>
 	          References
@@ -65,7 +70,7 @@
 				<a class='filterClick' href='#ref_{{c.ciboulexp.xpid}}'><button class="btn btn-outline"><strong>{{c.mainCycle}}</strong> : {{c.ciboulexp}} </button></a>
 			  {% endfor %} 
 	          </div>
-	      </div>
+	  </div>-->
           
           <div>  
            <div class='row'> 
@@ -253,6 +258,7 @@
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'js/jquery.easing.min.js' %}"></script> 
 <script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
+<script src="{% static 'js/jquery.easy-autocomplete.min.js' %}"></script>
 
 <script>
 $(document).ready( function () {
@@ -278,6 +284,27 @@ $(document).ready( function () {
 		tableFront.search( xpid ).draw();
 	});	
 });
+
+var optionsEasyAuto = {
+        url: "/davai/ajaxXpids/",
+        getValue: "xpid",
+
+        list: {
+                onChooseEvent: function() {
+                        var value = $("#provider-json").getSelectedItemData().pk;
+                        console.log(value);
+                        $(location).prop('href', '/davai/lightView/'+value)
+
+                },
+                maxNumberOfElements: 1000,
+                match: {
+                        enabled: true
+                }
+        }
+};
+
+$("#provider-json").easyAutocomplete(optionsEasyAuto);
+
 
 </script>
 

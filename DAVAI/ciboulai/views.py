@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 import os
 from template_tags.custom_tags import prettyJson3
-
+from math import ceil
 
 def Front(request):
     context=dict()
@@ -18,7 +18,7 @@ def Front(request):
     countExp=Ciboulexp.objects.filter().count()
     page = int(request.GET.get('page', 1))
     numberPerPage=30
-    pageList=list(range(1,1+int(countExp/numberPerPage)))
+    pageList=list(range(1,1+ceil(countExp/numberPerPage)))
     
     start=(page-1)*numberPerPage
 
@@ -32,6 +32,7 @@ def Front(request):
         'countExp':countExp
     }
     return render(request, template, context)
+
 
 def NotesView(request):
     context=dict()
@@ -101,7 +102,8 @@ def CiboulexpLightView(request,cid):
 
         #----
 
-        headers=['task','last update','status','comparison status','main metric','value','drHook rel diff','rss rel diff','more']
+        headers=['task','last update','status','comparison status','main metric','value','rss rel diff','more']
+        #headers=['task','last update','status','comparison status','main metric','value','drHook rel diff','rss rel diff','more']
 
         headersSolo=[]
   
@@ -119,7 +121,7 @@ def CiboulexpLightView(request,cid):
         for it in ['appenv_lam_details', 'appenv_clim_details', 'appenv_global_details', 'commonenv_details']: # to hide
             xpinfoKeys.remove(it)
         xpinfoKeys.sort()
-        headenv=['appenv_global','appenv_lam','appenv_fullpos_partners','appenv_clim','commonenv','input_shelf_global','input_shelf_lam']
+        headenv=['appenv_global','appenv_lam','appenv_fullpos_partners','appenv_clim','commonenv','davaienv']
         filterClick=["forecast","ensemble","adjoint","3D","4D","obs_op","ecma2ccma","screening","fullpos","dfi","surfex","LAM","batodb","minim","OOPS","CNT0"]
         context = {
             'exp':exp,
@@ -167,7 +169,17 @@ def addNote(request):
             'message':'la note a été correctement ajoutée!'
             
             })   
-     
+
+
+def ajaxXpids(request):
+    if request.method == 'POST':
+        pass
+    else:
+        Ciboulexp.objects.filter()
+        return JsonResponse(list(Ciboulexp.objects.filter().order_by('-xpid').values('xpid','pk')),safe=False)
+
+
+
 def ajaxLoadModal(request):
     if request.method == 'POST':
         pass
@@ -219,8 +231,13 @@ def api(request):
         if pwd and os.getenv('DAVAI_POST_PWD') and pwd==os.getenv('DAVAI_POST_PWD'):
             message+="Token is OK!"
         else:
-            message+="Token is not present or not good (for the moment this is not a problem)....\n"
-            
+            message+="ERROR: Token is not present or wrong, Ciboulai feeding refused. Please provide a valid token.\n"
+            rc=1
+            return JsonResponse({
+              'returnCode':rc,
+              'message':message,
+            })
+
         if type=="xpinfo":
             #check if jsonData seems ok
             jsonDict=json.loads(jsonData)
@@ -278,6 +295,5 @@ def api(request):
     return JsonResponse({
         'returnCode':rc,
         'message':message,
-        
     })  
 

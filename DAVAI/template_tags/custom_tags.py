@@ -179,7 +179,7 @@ def note_btn(dictionary, key):
     if key in dictionary.keys():
         stri=''
         for v in dictionary.get(key):
-            stri+="<a  class='btn btn-outline-primary' data-toggle='popover' role='button'  data-trigger='focus' tabindex='0' data-placement='top' title='' data-content='%s' data-html='true' data-original-title='%s'><i class='fas fa-fw fa-sticky-note'></i>&nbsp;</a>"%(v.replace('\n','<br>'),'Notes sur cette tâche')
+            stri+="""<a  class='btn btn-outline-primary' data-toggle='popover' role='button'  data-trigger='focus' tabindex='0' data-placement='top' title='' data-content="{popover}" data-html='true' data-original-title=''><i class='fas fa-fw fa-sticky-note'></i>{message}</a>""".format(popover=v.replace('\n','<br>'),message='Notes sur cette tâche')
         return stri
     else:
         return ''
@@ -205,8 +205,6 @@ def get_item(dictionary, key):
 
 @register.filter
 def get_itemdetails(dictionary, key):
-    if 'shelf' in key:
-        return 'The shelf is just a folder that contains resources useful for the tests (files like observation buffers, varbc, sigmab, initial conditions,...)'
 
     t=str(type(dictionary))
     if 'str' in t:
@@ -464,29 +462,6 @@ def dictToDiffBtn(input):
         else:
             stri="<a target='_blank' class='btn btn-lg btn-success' href='/gws/diff/?path1={}'>View listing</a><p>Listing : {}<br>cache: {}</p>".format(uri_to_iri(url),uri_to_iri(url),uri_to_iri(urlCache))    
     return stri
-
-
-#def dictToDiffBtn(input):
-#    stri=""
-#    if hasattr(input,'keys'):
-        #2 listings
-#        urls={}
-#        for x in ['ref','test']:
-#            if input.get(x):
-#                for l in input.get(x):
-#                    if 'hendrix' in l:
-#                        urls[x]='ftp://'+l.split('@')[1]
-#"                stri="<a target='_blank' class='btn btn-lg btn-success' href='/gws/diff/?path1={}&path2={}'>View listings diffs</a><p>Listing Ref : {}</p><p>Listing Xp : {}</p>".format(
-#                    uri_to_iri(urls.get('ref')),uri_to_iri(urls.get('test')),
-#                    uri_to_iri(urls.get('ref')),uri_to_iri(urls.get('test')))    
-#    else:
-#        #1 listing
-#        url="undef"
-#        for l in input:
-#            if 'hendrix' in l:
-#                url='ftp://'+l.split('@')[1]
-#        stri="<a target='_blank' class='btn btn-lg btn-success' href='/gws/diff/?path1={}'>View listing</a><p>Listing : {}</p>".format(uri_to_iri(url),uri_to_iri(url))    
-#    return stri
 
 
 

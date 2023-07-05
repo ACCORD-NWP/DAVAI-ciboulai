@@ -30,7 +30,7 @@ DEBUG = myhost=="sxobs1"
 if myhost=="sxobs1":
     dbname="sxobs1.sqlite3"
 else:
-    dbname="db.sqlite3"
+    dbname="davaiprod.db.sqlite3"
 #DEBUG = True
 
 ALLOWED_HOSTS = ['www-davai.umr-cnrm.fr','www-davai.cnrm.meteo.fr','0.0.0.0']
@@ -128,8 +128,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = '/davaistatic/static/'
 #STATIC_URL = '/static/'
+STATIC_URL = '/davaistatic/static/'
 STATIC_ROOT = "/home/b5d045e6a2d7d567c0f95b76806cc81b/static/"
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),

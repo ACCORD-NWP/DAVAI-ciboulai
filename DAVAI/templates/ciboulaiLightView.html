@@ -40,8 +40,9 @@
 	    <ul class='list-unstyled' style="line-height: 200%;"><strong>
 <li class='row'><span class='col-md-2'>ial_git_ref:</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"ial_git_ref" | safe }} </span></li>
 <li class='row'><span class='col-md-2'>usecase:</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"usecase" | safe }} </span></li>
-  {% if exp.reference.pk is None  %}
-<li class='row'><span class='col-md-2'>ref_vconf:</span><span class='offset-md-1 col-md-9'>No reference</span></li>
+  {% if exp.reference is None  %}
+<!-- <li class='row'><span class='col-md-2'>ref_xpid:</span><span class='offset-md-1 col-md-9'>No reference</span></li> -->
+<li class='row'><span class='col-md-2'>ref_xpid:</span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"ref_xpid" | safe }} </span></li>
   {% else %}
   <li class='row'><span class='col-md-2'>ref_xpid:</span><span class='offset-md-1 col-md-9'><a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
   {% endif %}
@@ -79,22 +80,9 @@
 	  <div class="card">
 	    <div >
 	      <div class="card-body">
-		      <button value="forecast" class="btn filterClick">forecast</button>
-		      <button value="ensemble" class="btn filterClick">ensemble</button>
-		      <button value="adjoint" class="btn filterClick">adjoint</button>
-		      <button value="3D" class="btn filterClick">3D</button>
-		      <button value="4D" class="btn filterClick">4D</button>
-		      <button value="obs_op" class="btn filterClick">obs_op</button>
-		      <button value="ecma2ccma" class="btn filterClick">ecma2ccma</button>
-		      <button value="screening" class="btn filterClick">screening</button>
-			  <button value="fullpos" class="btn filterClick">fullpos</button>
-			  <button value="dfi" class="btn filterClick">dfi</button>
-			  <button value="surfex" class="btn filterClick">surfex</button>
-			  <button value="LAM" class="btn filterClick">LAM</button>
-			  <button value="batodb" class="btn filterClick">batodb</button>
-			  <button value="minim" class="btn filterClick">minim</button>
-			  <button value="OOPS" class="btn filterClick">OOPS</button>
-			  <button value="CNT0" class="btn filterClick">CNT0</button>
+                 {% for i in filterClick %}
+		  <button value="{{i}}" class="btn filterClick">{{i}}</button>
+                 {% endfor %}
 	      </div>
 	    </div>
 	  </div>
@@ -129,7 +117,7 @@
 	          {{value.continuity.leadExpert}}
 	      </td>
 	      <td>{{value.continuity | leadExpertValue}} </td>
-	      <td>{{value.continuity.drHookMax | getDrHookRelDiff:"Relative diff in Elapse time" | safe}} </td>
+	     <!-- <td>{{value.continuity.drHookMax | getDrHookRelDiff:"Relative diff in Elapse time" | safe}} </td> -->
 	      <td>{{value.continuity.rss | getDrHookRelDiff:"Relative RSStotal diff" | safe }} </td>
 	      <td><a data-toggle="modal" data-target="#taskDetail_{{forloop.counter}}" class="btn btn-primary ajaxDetail" href="#" id="ajaxDetail_{{forloop.counter}}" ><i class="fas fa-fw fa-plus"></i></a> </td>
 	      
@@ -222,7 +210,7 @@
       {% for key in xpinfoKeys %}
       <div class='row'>
 	      <div class='col-sm-4'>
-	      {{key | upper}}
+	      {{key}}
 	      </div> 
 	      <div class='col-sm-8'>
 	      {{xpinfo| get_item:key |safe}}
@@ -290,13 +278,6 @@
 <script>
 $(document).ready( function () {
 	
-	/* 	$('#refresh').click(function () {
-			var mess = $(this).data('value');
-			var xpid = $(this).data('xpid');
-			console.log(mess);
-			$('#importWarning').text(mess);
-			$('#inputXPID').val(xpid);
-		});	 */
 		$('.writeNote').click(function () {
 			var task=$(this).data('value');
 			$('#noteTask').text(task);

@@ -19,4 +19,5 @@ def main():
 
 
 if __name__ == '__main__':
+#    os.system('cp db.sqlite3.vierge davaiprod.db.sqlite3')  
     main()
