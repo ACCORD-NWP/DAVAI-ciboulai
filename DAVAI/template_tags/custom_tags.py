@@ -179,7 +179,7 @@ def note_btn(dictionary, key):
     if key in dictionary.keys():
         stri=''
         for v in dictionary.get(key):
-            stri+="""<a  class='btn btn-outline-primary' data-toggle='popover' role='button'  data-trigger='focus' tabindex='0' data-placement='top' title='' data-content="{popover}" data-html='true' data-original-title=''><i class='fas fa-fw fa-sticky-note'></i>{message}</a>""".format(popover=v.replace('\n','<br>'),message='Notes sur cette tâche')
+            stri+="""<a  class='btn btn-outline-primary' data-toggle='popover' role='button'  data-trigger='focus' tabindex='0' data-placement='top' title='' data-content="{popover}" data-html='true' data-original-title=''><i class='fas fa-fw fa-sticky-note'></i>{message}</a>""".format(popover=v.replace('\n','<br>').replace('"','\''),message='Notes sur cette tâche')
         return stri
     else:
         return ''
