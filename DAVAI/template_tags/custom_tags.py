@@ -520,10 +520,10 @@ def dictToJotables(dict,itself=True):
                              dict[step][obstype][sensor][var].get('jo/n'),dict[step][obstype][sensor][var].get('jo'),dict[step][obstype][sensor][var].get('n'))
                         else:
                             stri+="<tr><th>{}</th><td>{}</td><td>{}</td><td class='{}'>{}</td><td>{}</td><td>{}</td><td class='{}'>{}</td><td>{}</td><td>{}</td></tr>".format(obstype,sensor,var,
-                             floatToColor(dict[step][obstype][sensor][var].get('jo/n').get('reldiff')),dict[step][obstype][sensor][var].get('jo/n').get('reldiff'),
+                             floatToColor(dict[step][obstype][sensor][var].get('jo/n').get('reldiff')),format(dict[step][obstype][sensor][var].get('jo/n').get('reldiff'),".3E"),
                              dict[step][obstype][sensor][var].get('jo/nxp'),dict[step][obstype][sensor][var].get('jo/nref'),
                              floatToColor(-dict[step][obstype][sensor][var].get('n').get('reldiff')),
-                             dict[step][obstype][sensor][var].get('n').get('reldiff'),
+                             format(dict[step][obstype][sensor][var].get('n').get('reldiff'),".3E"),
                              dict[step][obstype][sensor][var].get('nxp'),dict[step][obstype][sensor][var].get('nref'))
                 else:
                     if itself:
@@ -531,10 +531,10 @@ def dictToJotables(dict,itself=True):
                              dict[step][obstype][sensor].get('jo/n'),dict[step][obstype][sensor].get('jo'),dict[step][obstype][sensor].get('n'))
                     else:
                         stri+="<tr><th>{}</th><td>{}</td><td>{}</td><td class='{}'>{}</td><td>{}</td><td>{}</td><td class='{}'>{}</td><td>{}</td><td>{}</td></tr>".format(obstype,sensor,'-',
-                         floatToColor(dict[step][obstype][sensor][var].get('jo/n').get('reldiff')),dict[step][obstype][sensor][var].get('jo/n').get('reldiff'),
+                         floatToColor(dict[step][obstype][sensor][var].get('jo/n').get('reldiff')),format(dict[step][obstype][sensor][var].get('jo/n').get('reldiff'),".3E"),
                          dict[step][obstype][sensor][var].get('jo/nxp'),dict[step][obstype][sensor][var].get('jo/nref'),
                          floatToColor(-dict[step][obstype][sensor][var].get('n').get('reldiff')),
-                         dict[step][obstype][sensor][var].get('n').get('reldiff'),
+                         format(dict[step][obstype][sensor][var].get('n').get('reldiff'),".3E"),
                          dict[step][obstype][sensor][var].get('nxp'),dict[step][obstype][sensor][var].get('nref'))
 
         stri+="</tbody></table></div>"

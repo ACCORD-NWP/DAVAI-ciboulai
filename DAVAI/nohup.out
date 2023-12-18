@@ -21845,3 +21845,14 @@ TypeError: In order to allow non-dict objects to be serialized set the safe para
 [2023-10-11 11:24:18 +0200] [24021] [INFO] Booting worker with pid: 24021
 [2023-10-11 11:24:18 +0200] [24022] [INFO] Booting worker with pid: 24022
 [2023-10-11 11:24:18 +0200] [24023] [INFO] Booting worker with pid: 24023
+[2023-10-18 04:55:01 +0200] [24016] [INFO] Handling signal: hup
+[2023-10-18 04:55:01 +0200] [24016] [INFO] Hang up: Master
+[2023-10-18 04:55:01 +0200] [58844] [INFO] Booting worker with pid: 58844
+[2023-10-18 04:55:01 +0200] [58845] [INFO] Booting worker with pid: 58845
+[2023-10-18 04:55:01 +0200] [24016] [INFO] Handling signal: term
+[2023-10-18 04:55:01 +0200] [58847] [INFO] Booting worker with pid: 58847
+[2023-10-18 04:55:01 +0200] [58843] [INFO] Booting worker with pid: 58843
+[2023-10-18 04:55:01 +0200] [58846] [INFO] Booting worker with pid: 58846
+[2023-10-18 02:55:02 +0000] [58845] [INFO] Worker exiting (pid: 58845)
+[2023-10-18 02:55:02 +0000] [58844] [INFO] Worker exiting (pid: 58844)
+[2023-10-18 04:55:31 +0200] [24016] [INFO] Shutting down: Master
