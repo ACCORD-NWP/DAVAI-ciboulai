@@ -106,16 +106,27 @@ def dateItself(di):
 @register.filter
 def status_btn(dictionary,stri):
     if hasattr(dictionary,'get'):
-        return "<span><button id='sClickDetail_%s' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button></span>"%(stri,dictionary.get('text').replace('\"','`').replace('\'','`'),statusSymbolToColor.get(dictionary.get('symbol')),dictionary.get('short'))
+        return "<span><button data-tabid='1' id='sClickDetail_%s' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button></span>"%(stri,dictionary.get('text').replace('\"','`').replace('\'','`'),statusSymbolToColor.get(dictionary.get('symbol')),dictionary.get('short'))
     else:
-        return "<button id='sClickDetail_%s' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button>"%(stri,dictionary,'outline-danger','Expertise failed')
+        return "<button data-tabid='1' id='sClickDetail_%s' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button>"%(stri,dictionary,'outline-danger','Expertise failed')
+
 @register.filter
 def compStatus_btn(dictionary,stri):
     if hasattr(dictionary,'get'):
-        return "<span><button id='clickDetail_%s' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button></span>"%(stri,str(dictionary.get('text').replace('\"','`').replace('\'','`')),compStatusSymbolToColor.get(dictionary.get('symbol')),dictionary.get('short'))
+        return "<span><button id='clickDetail_%s' data-tabid='2' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button></span>"%(stri,str(dictionary.get('text').replace('\"','`').replace('\'','`')),compStatusSymbolToColor.get(dictionary.get('symbol')),dictionary.get('short'))
     else:
-        return "<span><button id='clickDetail_%s' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button></span>"%(stri,'Comparison is not available','outline',' --- ')
+        return "<span><button id='clickDetail_%s' data-tabid='2'  data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button></span>"%(stri,'Comparison is not available','outline',' --- ')
 
+
+@register.filter
+def compStatusOrVoid_btn(dictionary,stri):
+    if hasattr(dictionary,'get'):
+        if dictionary.get('symbol')=='0':
+            return ''
+        else:
+            return "<span><button data-tabid='3' id='clickDetail_%s' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button></span>"%(stri,str(dictionary.get('text').replace('\"','`').replace('\'','`')),compStatusSymbolToColor.get(dictionary.get('symbol')),dictionary.get('short'))
+    else:
+        return "<span><button data-tabid='3' id='clickDetail_%s' data-toggle='tooltip' data-placement='top' title='' data-original-title='%s' class='ajaxClickDetail btn btn-%s'>%s</button></span>"%(stri,'Comparison is not available','outline',' --- ')
 
 @register.filter
 def leadExpertDescription(dictionary):

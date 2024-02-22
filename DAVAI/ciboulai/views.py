@@ -102,7 +102,16 @@ def CiboulexpLightView(request,cid):
 
         #----
 
-        headers=['task','last update','status','comparison status','main metric','value','rss rel diff','more']
+        #headers=['task','last update','status','comparison status','consistency','main metric','value','rss rel diff','more']
+        headers=[("task", "identifier of the task, described by a series of attributes such as job prefix/sequence, model, kind of task, families, compiler flavours etc..."),
+    ("update", "timestamp of latest update of the task"),
+    ("status", "status of the task"),
+    ("continuity", "comparison to the same task of a reference experiment"),
+    ("consistency", "(occasional) comparison to another task of the same experiment"),
+    ("main metric", "most relevant metric to assess test results"),
+    ("value", "value of the indicated main metric"),
+    ("RSS reldiff", "relative difference in RSS (memory)")
+]
         #headers=['task','last update','status','comparison status','main metric','value','drHook rel diff','rss rel diff','more']
 
         headersSolo=[]

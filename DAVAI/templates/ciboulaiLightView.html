@@ -92,8 +92,8 @@
   <table id="tableview1" class="table table-hover">
 	  <thead>
 	    <tr>
-	        {% for key in headers %}
-			    <th scope="col"><span>{{key}}</span></th>
+	        {% for key,text in headers %}
+			    <th scope="col"><span data-toggle="tooltip" data-placement="top" title="" data-original-title="{{text}}">{{key}}</span></th>
 			{% endfor %}
 	      
 	    </tr>
@@ -101,7 +101,7 @@
 	  <tbody>
 		{% for key, value in globalDico.items %}
 	    <tr class=''>
-		    <td><a href="/davai/taskView/{{key.pk}}" >{{key}}</a>
+	      <td><a data-toggle="modal" data-target="#taskDetail_{{forloop.counter}}" class="ajaxDetail" id="ajaxDetail_{{forloop.counter}}" href="#" data-id="ajaxDetail_{{forloop.counter}}" >{{key}}</a> <a href="/davai/taskView/{{key.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="view the same task in other experiments" ><i class='fas fa-database fa-fw'></i></a>
 	      <a  href="#"  data-value="{{key}}" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a comment about this task!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a>
 	      {{notes | note_btn:key.name | safe}}
 
@@ -109,7 +109,8 @@
 	      </td>
 	      <td>{{value.itself.Updated| dateUpdate | safe}}</td>
 	      <td>{{value.itself.Status | status_btn:forloop.counter | safe}}</td>
-	      <td>{{value.continuity.comparisonStatus | compStatus_btn:forloop.counter | safe  }} </td>
+	      <td>{{value.continuity.comparisonStatus | compStatus_btn:forloop.counter | safe  }}</td>
+	      <td>{{value.consistency.comparisonStatus | compStatusOrVoid_btn:forloop.counter | safe  }} </td>
 	      
 
 	      <td>
@@ -119,7 +120,6 @@
 	      <td>{{value.continuity | leadExpertValue}} </td>
 	     <!-- <td>{{value.continuity.drHookMax | getDrHookRelDiff:"Relative diff in Elapse time" | safe}} </td> -->
 	      <td>{{value.continuity.rss | getDrHookRelDiff:"Relative RSStotal diff" | safe }} </td>
-	      <td><a data-toggle="modal" data-target="#taskDetail_{{forloop.counter}}" class="btn btn-primary ajaxDetail" href="#" id="ajaxDetail_{{forloop.counter}}" ><i class="fas fa-fw fa-plus"></i></a> </td>
 	      
 
   
@@ -340,7 +340,11 @@ $(document).ready( function () {
 		};
 		$('.ajaxClickDetail').click(function () {
 			var modalId = $(this).prop('id').split('_')[1];
+			var tabid = $(this).attr('data-tabid');
+
 			$("#ajaxDetail_"+modalId).click();
+                        $("#taskDetail_"+modalId+" .nav-tabs  li:nth-child("+tabid+") a").click();
+
 		});
 		$('.ajaxDetail').click(function () {
 			var modalId = $(this).prop('id').split('_')[1];
