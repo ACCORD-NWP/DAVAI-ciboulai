@@ -35,14 +35,18 @@
 
 {% block appSidebar %}
    <li class="nav-item">
-	   <a class='nav-link' href="/davai/"><i class='fas fa-flask fa-fw'></i> View all XPID</a>
+	   <a class='nav-link' href="/davai/"><i class='fas fa-flask fa-fw'></i>Recent experiments</a>
    </li>
    <li class="nav-item">
+	   <a class='nav-link' href="/davai/?all=1"><i class='fas fa-globe fa-fw'></i>All experiments</a>
+   </li>
+<!--   <li class="nav-item">
 	   <a class='nav-link' href="/davai/allTasks"><i class='fas fa-tasks fa-fw'></i> View all tasks</a>
    </li>
    <li class="nav-item">
 	   <a class='nav-link' href="/davai/lastTaskInstances"><i class='fas fa-th fa-fw'></i> View last task instances</a>
    </li>
+-->
    <li class="nav-item">
 	   <a class='nav-link' href="/davai/notesview"><i class='fas fa-pencil-alt fa-fw'></i> View all notes</a>
    </li>
@@ -74,26 +78,7 @@
           
           <div>  
            <div class='row'> 
-            <div class='col-sm-6'>
-                <h2 class="h3 mb-2 mt-2">Last tests</h2>
-	    </div> 
-            <div class='col-sm-6'>
-                <h2 class="h3 mb-2 mt-2">Pagination</h2>
-		  <ul class="pagination">
-		    {% for p in pageList %}
-		    {% if p == page %}
-		    <li class="page-item active">
-			    <a class="page-link" href="?page={{p}}">{{p}}</a>
-		    </li>
-		    {% else %}
-		    <li class="page-item">
-			    <a class="page-link" href="?page={{p}}">{{p}}</a>
-		    </li>
-		    {% endif %}
-		    {% endfor %}
-		  </ul>
-
-	    </div> 
+                <h1 class="h3 mb-2 mt-2">{{pageH1|safe}}</h1>
 	   </div> 
              <table id="tableFront" class="table table-hover">
 			  <thead>
@@ -105,6 +90,7 @@
 			      <th scope="col">SUBMIT DATE</th>
 			      <th scope="col">LAST UPDATE</th>
 			      <th scope="col">USECASE</th>
+			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks pending' class='btn btn-outline-secondary'>PD</button></th>
 			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Validated tasks' class='btn btn-success'>OK</button></th>
 			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks with differing results' class='btn btn-danger'>KO</button></th>
 			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Crashed tasks' class='btn btn-outline-danger'>Crashed</button></th>
@@ -129,6 +115,7 @@
 			      <td> {{exp.xpinfo | get_item:"initial_time_of_launch" | dateUpdate |safe}} </td>
 			      <td> {{exp.updated | date:"Y-m-d H:i:s" }} </td>
 			      <td> <a class='filterClick' href='#ref_{{exp.xpinfo | get_item:"usecase" |safe}}'><button class="btn btn-outline"> {{exp.xpinfo | get_item:"usecase" |safe}} </button></a> </td>
+			      {{exp.symbolSummary_nan| safe }} 
 			      {{exp.symbolSummary_ok| safe }} 
 			      {{exp.symbolSummary_ko| safe }} 
 			      {{exp.symbolSummary_cr| safe }} 
@@ -142,6 +129,16 @@
 			</table> 
 
           </div>
+            <div class='col-sm-12 pagination mb-2'>
+		    {% for p in pageList %}
+		    {% if p == page %}
+			    <a class="btn btn-sm btn-primary" href="?page={{p}}">{{p}}</a>
+		    {% else %}
+			    <a class="btn btn-sm btn-outline-primary" href="?page={{p}}">{{p}}</a>
+		    {% endif %}
+		    {% endfor %}
+
+	    </div> 
 
  
 

@@ -19,6 +19,7 @@
       <th scope="col"><button value="Crashed" class='btn btn-outline-danger filterClick'>Crashed</button></th>
       <th scope="col"><button value="?" class='btn btn-warning filterClick'>?</button></th>
       <th scope="col"><button  class='btn btn-secondary'>NC</button></th>
+      <th scope="col"><button  class='btn btn-outline-secondary'>Pending</button></th>
       </tr>
   </thead>
   <tbody>
@@ -28,6 +29,7 @@
       {{exp.symbolSummary_cr| safe }}
       {{exp.symbolSummary_tc| safe }}
       {{exp.symbolSummary_nc| safe }}
+      {{exp.symbolSummary_nan| safe }}
    
     </tr>
    </tbody>

@@ -37,6 +37,10 @@ class Ciboulexp(models.Model):
     @property
     def symbolSummary_nc(self):
         return self.symbolSummary('nc')
+    
+    @property
+    def symbolSummary_nan(self):
+        return self.symbolSummary('NAN')
 
     def symbolSummary(self,code='ok'):
         cssClass=""

@@ -33,7 +33,7 @@ else:
     dbname="davaiprod.db.sqlite3"
 #DEBUG = True
 
-ALLOWED_HOSTS = ['www-davai.umr-cnrm.fr','www-davai.cnrm.meteo.fr','0.0.0.0']
+ALLOWED_HOSTS = ['www-davai.umr-cnrm.fr','www-davai.cnrm.meteo.fr','0.0.0.0','www-ubuntu-davai.umr-cnrm.fr']
 
 
 # Application definition

@@ -4,7 +4,7 @@ from django.http import Http404
 from django.http import JsonResponse
 from .tasks import updateCiboulexp
 import json
-
+import datetime
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 import os
@@ -15,7 +15,17 @@ def Front(request):
     context=dict()
     template='ciboulai.html'
 
-    countExp=Ciboulexp.objects.filter().count()
+    allXp = request.GET.get('all', False)
+
+    if allXp:
+        query=Ciboulexp.objects.filter().order_by('-pk')
+        pageH1='Davai all tests'
+    else:
+        dt=datetime.datetime.now()-datetime.timedelta(days=31)
+        query=Ciboulexp.objects.filter(updated__gt=dt).order_by('-pk')
+        pageH1='Davai recent tests'
+
+    countExp=query.count()
     page = int(request.GET.get('page', 1))
     numberPerPage=30
     pageList=list(range(1,1+ceil(countExp/numberPerPage)))
@@ -24,11 +34,12 @@ def Front(request):
 
     context = {
         'gmapReferences':GmapReference.objects.order_by('-mainCycle'),
-        'ciboulexps':Ciboulexp.objects.order_by('-pk')[start:start+numberPerPage],
+        'ciboulexps':query[start:start+numberPerPage],
         'taskCount':Task.objects.filter().count(),
         'taskInstanceCount':TaskInstance.objects.filter().count(),
         'page':page,
         'pageList':pageList,
+        'pageH1':pageH1,
         'countExp':countExp
     }
     return render(request, template, context)
