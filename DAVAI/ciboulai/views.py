@@ -27,7 +27,7 @@ def Front(request):
 
     countExp=query.count()
     page = int(request.GET.get('page', 1))
-    numberPerPage=30
+    numberPerPage=10
     pageList=list(range(1,1+ceil(countExp/numberPerPage)))
     
     start=(page-1)*numberPerPage
