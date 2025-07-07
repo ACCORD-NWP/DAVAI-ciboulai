@@ -43,7 +43,7 @@ background: #dfe6f9;
   margin-right: 0rem;
   margin-left: 0rem;
 }
-.collapse .row{
+.pane .collapse .row{
 	border-bottom:1px solid #000;
 }
 

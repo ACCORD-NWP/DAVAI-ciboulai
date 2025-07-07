@@ -434,31 +434,16 @@ def dictToCanari(dict):
   
 
 def dictToDiffBtn(input):
-    stri=""
+    stri="<table>"
     if hasattr(input,'keys'):
         #2 listings
-        urls={}
-        for x in ['ref','test']:
-            urls[x]={}
-            if input.get(x):
-                for l in input.get(x):
-                    if 'hendrix' in l:
-                        urls[x]['hendrix']='ftp://'+l.split('@')[1]
-                    elif 'scratch' in l:
-                        urls[x]['scratch']=l
-        if urls.get('test').get('hendrix') is None:
-            stri="<p>Listing cache Xp : {}</p><p>Listing ftp Ref : {}</p>".format(
-                uri_to_iri(urls.get('test').get('scratch')),
-                uri_to_iri(urls.get('ref').get('hendrix')))
-        else:
-            stri="<a target='_blank' class='btn btn-lg btn-success' href='/gws/diff/?path1={}&path2={}'>View listings diffs</a><p>Listing Ref : {} <br>cache: {}</p><p>Listing Xp : {}</p>".format(
-            uri_to_iri(urls.get('ref').get('hendrix')),uri_to_iri(urls.get('test').get('hendrix')),
-            uri_to_iri(urls.get('ref').get('hendrix')),uri_to_iri(urls.get('ref').get('scratch')),
-            uri_to_iri(urls.get('test').get('hendrix')))    
+        for xp in ['ref','test']:
+            stri+="<tr><td><span class='badge bg-light'>{}</span></td></tr>".format(xp)
+            for l in input.get(xp):
+                stri+="<tr><td><li><code>{}</code></li></td></tr>".format(l)
     elif hasattr(input,'append'):
         for l in input:
-            stri+="<p>Listing : {}</p>".format(uri_to_iri(l))
-
+            stri+="<tr><td><li><code>{}</code></li></td></tr>".format(uri_to_iri(l))
     else:
         #1 listing
         url="undef"
@@ -469,9 +454,11 @@ def dictToDiffBtn(input):
             elif 'scratch' in l:
                 urlCache=l
         if url == "undef":
-            stri="<p>Listing cache: {}</p>".format(uri_to_iri(urlCache))    
+            stri="<tr><td>Listing cache: <code>{}</code></td></tr>".format(uri_to_iri(urlCache))    
         else:
-            stri="<a target='_blank' class='btn btn-lg btn-success' href='/gws/diff/?path1={}'>View listing</a><p>Listing : {}<br>cache: {}</p>".format(uri_to_iri(url),uri_to_iri(url),uri_to_iri(urlCache))    
+            stri="<tr><td>Listing : <code>{}</code><br>cache: <code>{}</code></td></tr>".format(uri_to_iri(url),uri_to_iri(urlCache))    
+
+    stri+="</table>"
     return stri
 
 

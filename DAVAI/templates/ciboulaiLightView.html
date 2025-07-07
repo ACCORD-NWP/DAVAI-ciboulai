@@ -10,7 +10,8 @@
 <div id='content'>
 <div class='row bg-light'>
 	<div class="col-md-6 text-center" style="border: 5px solid;padding: 34px;">
-		<h2><strong><a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2><h3><small>{{xpinfo | get_item:"comment" | safe }}</small></h3></div>
+		<h2><strong><a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2><h3 style="font-size:1.5rem;"><small>{{xpinfo | get_item:"comment" | safe }} ({{xpinfo | get_item:"usecase" | safe }}) against <a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></small></h3>
+</div>
 <div class='col-md-6'>
   <table class="table text-center">
 	  <thead>
@@ -36,38 +37,9 @@
   </table>
 </div>
 </div>
+<span>{{notes | length}} notes on <a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a><a  href="#"  data-value="XP" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a global comment about this experiment!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a></p><p>{{notes | note_btn:"XP" | safe }}</span>
 
-<div class='row bg-light' style="border-bottom: 5px solid;">
-    <div class='col-md-6'>
-	    <ul class='list-unstyled' style="line-height: 200%;"><strong>
-<li class='row'><span class='col-md-2'>ial_git_ref:</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"ial_git_ref" | safe }} </span></li>
-<li class='row'><span class='col-md-2'>usecase:</span><span class='offset-md-1 col-md-9'> {{xpinfo | get_item:"usecase" | safe }} </span></li>
-  {% if exp.reference is None  %}
-<!-- <li class='row'><span class='col-md-2'>ref_xpid:</span><span class='offset-md-1 col-md-9'>No reference</span></li> -->
-<li class='row'><span class='col-md-2'>ref_xpid:</span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"ref_xpid" | safe }} </span></li>
-  {% else %}
-  <li class='row'><span class='col-md-2'>ref_xpid:</span><span class='offset-md-1 col-md-9'><a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></span></li>
-  {% endif %}
-<li class='row'><span class='col-md-2'>ref_vconf:</span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"ref_vconf" | safe }} </span></li>
-<li class='row'><span class='col-md-2'>tests_version:</span><span class='offset-md-1 col-md-9'>{{xpinfo | get_item:"tests_version" | safe }} </span></li>
-		    </strong></ul>
-    </div>
-    <div class='col-md-6'>
-     <ul class='list-unstyled'>
-       {% for i in headenv %}
-         {% if i == "input_shelf_global" %}
-         <hr />
-         {% endif %}
-         
-         <li class='row'><a class="btn-sm btn-primary ml-4" href="#" data-toggle="modal" data-target="#{{i}}Detail" ><i class="fas fa-fw fa-plus"></i></a> <span class='col-md-2'>{{i}}:</span><span class='offset-md-1 col-md-8'> {{xpinfo | get_item:i | safe }}</span></li>
-       {% endfor %}
-     </ul>
-    </div>
-</div>
-
-<p>{{notes | length}} notes on <a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a><a  href="#"  data-value="XP" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a global comment about this experiment!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a></p><p>{{notes | note_btn:"XP" | safe }}</p>
   <div class="card p-3">
-    <p>Quick filters</p>
     <div>
       <button value="Ended" class="btn btn-outline-success filterClick">Ended</button>
 	  <button value="Crashed" class="btn btn-outline-danger filterClick">Crashed</button>

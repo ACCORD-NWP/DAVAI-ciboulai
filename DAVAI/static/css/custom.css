@@ -47,7 +47,7 @@ background: #dfe6f9;
     white-space: nowrap;
 }
 
-.collapse .row{
+.collapse .card-body .row{
 	border-bottom:1px solid #000;
 }
 

@@ -142,7 +142,7 @@ def CiboulexpLightView(request,cid):
             xpinfoKeys.remove(it)
         xpinfoKeys.sort()
         headenv=['appenv_global','appenv_lam','appenv_fullpos_partners','appenv_clim','commonenv','davaienv']
-        filterClick=["forecast","ensemble","adjoint","3D","4D","obs_op","ecma2ccma","screening","fullpos","dfi","surfex","LAM","batodb","minim","OOPS","CNT0"]
+        filterClick=["arpege","arome","alaro","forecast","ensemble","adjoint","3D","4D","obs_op","screening","fullpos","surfex","LAM","batodb","minim","OOPS","CNT0"]
         context = {
             'exp':exp,
             'xpinfo':xpinfo,
