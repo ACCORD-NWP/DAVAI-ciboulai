@@ -16,13 +16,28 @@ def Front(request):
     template='ciboulai.html'
 
     allXp = request.GET.get('all', False)
+    
+    olddb = request.GET.get('old', False)
+
 
     if allXp:
         query=Ciboulexp.objects.filter().order_by('-pk')
         pageH1='Davai all tests'
     else:
-        dt=datetime.datetime.now()-datetime.timedelta(days=31)
-        query=Ciboulexp.objects.filter(updated__gt=dt).order_by('-pk')
+        if olddb:
+            TrueCiboulexp=Ciboulexp.objects.using('old')
+        else:
+            TrueCiboulexp=Ciboulexp.objects.filter().order_by('-pk')
+        if False:
+            #maybe not cheap
+            dt=datetime.datetime.now()-datetime.timedelta(days=31)
+            query=TrueCiboulexp.filter(updated__gt=dt).order_by('-pk')
+        else:
+            #last pk
+            pkmax=TrueCiboulexp[0].pk
+            query=TrueCiboulexp.filter(pk__gt=pkmax-100)
+
+
         pageH1='Davai recent tests'
 
     countExp=query.count()
@@ -114,14 +129,15 @@ def CiboulexpLightView(request,cid):
         #----
 
         #headers=['task','last update','status','comparison status','consistency','main metric','value','rss rel diff','more']
-        headers=[("task", "identifier of the task, described by a series of attributes such as job prefix/sequence, model, kind of task, families, compiler flavours etc..."),
+        headers=[
     ("update", "timestamp of latest update of the task"),
+    ("task", "identifier of the task, described by a series of attributes such as job prefix/sequence, model, kind of task, families, compiler flavours etc..."),
     ("status", "status of the task"),
     ("continuity", "comparison to the same task of a reference experiment"),
     ("consistency", "(occasional) comparison to another task of the same experiment"),
     ("main metric", "most relevant metric to assess test results"),
     ("value", "value of the indicated main metric"),
-    ("RSS reldiff", "relative difference in RSS (memory)")
+    ("RSS reldiff", "relative difference in RSS (memory)"),
 ]
         #headers=['task','last update','status','comparison status','main metric','value','drHook rel diff','rss rel diff','more']
 

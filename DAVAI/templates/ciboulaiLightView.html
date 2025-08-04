@@ -1,149 +1,150 @@
 {% extends "ciboulai.html" %}
 {% load static %}
 {% block appTitle %}
-  <title>{{exp.xpid}}</title>
+<title>{{exp.xpid}}</title>
 {% endblock %}
 
 
 
 {% block mainContainer %}
 <div id='content'>
+<div style="padding: 8px; color: #fff; background-color: #000; position:absolute;z-index:10000" id="popup"></div>
 <div class='row bg-light'>
-	<div class="col-md-6 text-center" style="border: 5px solid;padding: 34px;">
-		<h2><strong><a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2><h3 style="font-size:1.5rem;"><small>{{xpinfo | get_item:"comment" | safe }} ({{xpinfo | get_item:"usecase" | safe }}) against <a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></small></h3>
+<div class="col-md-6 text-center" style="border: 5px solid;padding: 34px;">
+<h2><strong><a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a></strong> <a class="btn btn-primary ml-4" href="#" data-toggle="modal" data-target="#xpinfoDetail" ><i class="fas fa-fw fa-plus"></i></a></h2><h3 style="font-size:1.5rem;"><small>{{xpinfo | get_item:"comment" | safe }} ({{xpinfo | get_item:"usecase" | safe }}) against <a href="/davai/lightView/{{exp.reference.pk}}">{{exp.reference}}</a></small></h3>
 </div>
 <div class='col-md-6'>
-  <table class="table text-center">
-	  <thead>
-      <th scope="col"><button value="OK" class='btn btn-success filterClick'>OK</button></th>
-      <th scope="col"><button value="KO" class='btn btn-danger filterClick'>KO</button></th>
-      <th scope="col"><button value="Crashed" class='btn btn-outline-danger filterClick'>Crashed</button></th>
-      <th scope="col"><button value="?" class='btn btn-warning filterClick'>?</button></th>
-      <th scope="col"><button  class='btn btn-secondary'>NC</button></th>
-      <th scope="col"><button  class='btn btn-outline-secondary'>Pending</button></th>
-      </tr>
-  </thead>
-  <tbody>
-    <tr>
-      {{exp.symbolSummary_ok| safe }}
-      {{exp.symbolSummary_ko| safe }}
-      {{exp.symbolSummary_cr| safe }}
-      {{exp.symbolSummary_tc| safe }}
-      {{exp.symbolSummary_nc| safe }}
-      {{exp.symbolSummary_nan| safe }}
-   
-    </tr>
-   </tbody>
-  </table>
+<table class="table text-center">
+<thead>
+<th scope="col"><button value="OK" class='btn btn-success filterClick'>OK</button></th>
+<th scope="col"><button value="KO" class='btn btn-danger filterClick'>KO</button></th>
+<th scope="col"><button value="Crashed" class='btn btn-outline-danger filterClick'>Crashed</button></th>
+<th scope="col"><button value="?" class='btn btn-warning filterClick'>?</button></th>
+<th scope="col"><button  class='btn btn-secondary'>NC</button></th>
+<th scope="col"><button  class='btn btn-outline-secondary'>Pending</button></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+{{exp.symbolSummary_ok| safe }}
+{{exp.symbolSummary_ko| safe }}
+{{exp.symbolSummary_cr| safe }}
+{{exp.symbolSummary_tc| safe }}
+{{exp.symbolSummary_nc| safe }}
+{{exp.symbolSummary_nan| safe }}
+
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <span>{{notes | length}} notes on <a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a><a  href="#"  data-value="XP" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a global comment about this experiment!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a></p><p>{{notes | note_btn:"XP" | safe }}</span>
 
-  <div class="card p-3">
-    <div>
-      <button value="Ended" class="btn btn-outline-success filterClick">Ended</button>
-	  <button value="Crashed" class="btn btn-outline-danger filterClick">Crashed</button>
-	  <button value="OK" class="btn btn-success filterClick">OK</button>
-	  <button value="KO" class="btn btn-danger filterClick">KO</button>
-	  <button value="! Comp Issue !" class="btn btn-orange filterClick">!</button>
-	  <button value="? Unknown ?" class="btn btn-warning filterClick">?</button>
-	  <button value="" class="float-right btn btn-secondary filterSave" data-toggle="modal" data-target="#saveFilterModal" ><i class='fas fa-save fa-fw'></i>Save filters</button>
-	  <button value="" class="float-right btn btn-primary filterClick"><i class='fas fa-times fa-fw'></i>Reset filters</button>
-    </div>
-	<div id="accordion_filter" class="mb-3 mt-3">
-	  <div class="card">
-	    <div >
-	      <div class="card-body">
-                 {% for i in filterClick %}
-		  <button value="{{i}}" class="btn filterClick">{{i}}</button>
-                 {% endfor %}
-	      </div>
-	    </div>
-	  </div>
-	</div>    
-    
+<div class="card p-3">
+<div>
+<button value="Ended" class="btn btn-outline-success filterClick">Ended</button>
+<button value="Crashed" class="btn btn-outline-danger filterClick">Crashed</button>
+<button value="OK" class="btn btn-success filterClick">OK</button>
+<button value="KO" class="btn btn-danger filterClick">KO</button>
+<button value="! Comp Issue !" class="btn btn-orange filterClick">!</button>
+<button value="? Unknown ?" class="btn btn-warning filterClick">?</button>
+<button value="" class="float-right btn btn-secondary filterSave" data-toggle="modal" data-target="#saveFilterModal" ><i class='fas fa-save fa-fw'></i>Save filters</button>
+<button value="" class="float-right btn btn-primary filterClick"><i class='fas fa-times fa-fw'></i>Reset filters</button>
+</div>
+<div id="accordion_filter" class="mb-3 mt-3">
+<div class="card">
+<div >
+<div class="card-body">
+{% for i in filterClick %}
+<button value="{{i}}" class="btn filterClick">{{i}}</button>
+{% endfor %}
+</div>
+</div>
+</div>
+</div>    
 
-  <table id="tableview1" class="table table-hover">
-	  <thead>
-	    <tr>
-	        {% for key,text in headers %}
-			    <th scope="col"><span data-toggle="tooltip" data-placement="top" title="" data-original-title="{{text}}">{{key}}</span></th>
-			{% endfor %}
-	      
-	    </tr>
-	  </thead>
-	  <tbody>
-		{% for key, value in globalDico.items %}
-	    <tr class=''>
-	      <td><a data-toggle="modal" data-target="#taskDetail_{{forloop.counter}}" class="ajaxDetail" id="ajaxDetail_{{forloop.counter}}" href="#" data-id="ajaxDetail_{{forloop.counter}}" >{{key}}</a> <a href="/davai/taskView/{{key.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="view the same task in other experiments" ><i class='fas fa-database fa-fw'></i></a>
-	      <a  href="#"  data-value="{{key}}" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a comment about this task!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a>
-	      {{notes | note_btn:key.name | safe}}
 
-	      
-	      </td>
-	      <td>{{value.itself.Updated| dateUpdate | safe}}</td>
-	      <td>{{value.itself.Status | status_btn:forloop.counter | safe}}</td>
-	      <td>{{value.continuity.comparisonStatus | compStatus_btn:forloop.counter | safe  }}</td>
-	      <td>{{value.consistency.comparisonStatus | compStatusOrVoid_btn:forloop.counter | safe  }} </td>
-	      
+<table id="tableview1" class="table table-hover">
+<thead>
+<tr>
+{% for key,text in headers %}
+<th scope="col"><span data-toggle="tooltip" data-placement="top" title="" data-original-title="{{text}}">{{key}}</span></th>
+{% endfor %}
 
-	      <td>
-	          <strong>{{value.continuity | leadExpertDescription}}</strong><br>
-	          {{value.continuity.leadExpert}}
-	      </td>
-	      <td>{{value.continuity | leadExpertValue}} </td>
-	     <!-- <td>{{value.continuity.drHookMax | getDrHookRelDiff:"Relative diff in Elapse time" | safe}} </td> -->
-	      <td>{{value.continuity.rss | getDrHookRelDiff:"Relative RSStotal diff" | safe }} </td>
-	      
+</tr>
+</thead>
+<tbody>
+{% for key, value in globalDico.items %}
+<tr class=''>
+<td>{{value.itself.Updated| dateUpdate | safe}}</td>
+<td><a data-toggle="modal" data-target="#taskDetail_{{forloop.counter}}" class="ajaxDetail" id="ajaxDetail_{{forloop.counter}}" href="#" data-id="ajaxDetail_{{forloop.counter}}" >{{key}}</a> <a href="/davai/taskView/{{key.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="view the same task in other experiments" ><i class='fas fa-database fa-fw'></i></a>
+<a  href="#"  data-value="{{key}}" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a comment about this task!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a>
+{{notes | note_btn:key.name | safe}}
 
-  
-	
-	    </tr>	  
-	    {% endfor %}   
-	  </tbody>
-	</table>   
-    </div>  
 
-  
-  </div>
+</td>
+<td>{{value.itself.Status | status_btn:forloop.counter | safe}}</td>
+<td>{{value.continuity.comparisonStatus | compStatus_btn:forloop.counter | safe  }}</td>
+<td>{{value.consistency.comparisonStatus | compStatusOrVoid_btn:forloop.counter | safe  }} </td>
+
+
+<td>
+<strong>{{value.continuity | leadExpertDescription}}</strong><br>
+{{value.continuity.leadExpert}}
+</td>
+<td>{{value.continuity | leadExpertValue}} </td>
+<!-- <td>{{value.continuity.drHookMax | getDrHookRelDiff:"Relative diff in Elapse time" | safe}} </td> -->
+<td>{{value.continuity.rss | getDrHookRelDiff:"Relative RSStotal diff" | safe }} </td>
+
+
+
+
+</tr>	  
+{% endfor %}   
+</tbody>
+</table>   
+</div>  
+
+
+</div>
 </div>
 
 {% for key, value in globalDico.items %}
 <div class="modal taskDetail fade" id='taskDetail_{{forloop.counter}}'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{key}}: task details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-       <div class="tabbable"> <!-- Only required for left/right tabs -->
-			<ul class="nav nav-tabs">
-			  <li class="nav-item">
-			    <a class="nav-link active" data-toggle="tab" href="#taskDetailTab1_{{forloop.counter}}">itself</a>
-			  </li>
-			  <li class="nav-item">
-			    <a class="nav-link" data-toggle="tab" href="#taskDetailTab2_{{forloop.counter}}">continuity</a>
-			  </li>
-			  <li class="nav-item">
-			    <a id="navTaskDetailTab3_{{forloop.counter}}" class="nav-link d-none" data-toggle="tab" href="#taskDetailTab3_{{forloop.counter}}">consistency</a>
-			  </li>
-			</ul>
-			<div class="tab-content">
-			  <div class="tab-pane fade active show" id="taskDetailTab1_{{forloop.counter}}">
-    		  </div>
-			  <div class="tab-pane fade" id="taskDetailTab2_{{forloop.counter}}">
-			  </div>
-			  <div class="tab-pane fade" id="taskDetailTab3_{{forloop.counter}}">
-			  </div>
-			</div>      
-		
-		</div>
-      </div>
-    </div>
-  </div>
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">{{key}}: task details</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<div class="tabbable"> <!-- Only required for left/right tabs -->
+<ul class="nav nav-tabs">
+<li class="nav-item">
+<a class="nav-link active" data-toggle="tab" href="#taskDetailTab1_{{forloop.counter}}">itself</a>
+</li>
+<li class="nav-item">
+<a class="nav-link" data-toggle="tab" href="#taskDetailTab2_{{forloop.counter}}">continuity</a>
+</li>
+<li class="nav-item">
+<a id="navTaskDetailTab3_{{forloop.counter}}" class="nav-link d-none" data-toggle="tab" href="#taskDetailTab3_{{forloop.counter}}">consistency</a>
+</li>
+</ul>
+<div class="tab-content">
+<div class="tab-pane fade active show" id="taskDetailTab1_{{forloop.counter}}">
+</div>
+<div class="tab-pane fade" id="taskDetailTab2_{{forloop.counter}}">
+</div>
+<div class="tab-pane fade" id="taskDetailTab3_{{forloop.counter}}">
+</div>
+</div>      
+
+</div>
+</div>
+</div>
+</div>
 </div>
 
 {% endfor %}  
@@ -152,90 +153,90 @@
 
 {% for i in headenv %}
 <div class="modal fade" id='{{i}}Detail'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{xpinfo | get_item:i}}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
-        If you have modified you cycle after playing it, the informations there may be outdated...</p>
-                {{xpinfo | get_itemdetails:i | safe}}
-      </div>
-    </div>
-  </div>
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">{{xpinfo | get_item:i}}</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<p class='text-warning'>Warning, this list has been generated during xpinfo task. <br>
+If you have modified you cycle after playing it, the informations there may be outdated...</p>
+{{xpinfo | get_itemdetails:i | safe}}
+</div>
+</div>
+</div>
 </div>
 {% endfor %}
 
 <div class="modal fade" id='xpinfoDetail'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">xpinfo details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      
-      {% for key in xpinfoKeys %}
-      <div class='row'>
-	      <div class='col-sm-4'>
-	      {{key}}
-	      </div> 
-	      <div class='col-sm-8'>
-	      {{xpinfo| get_item:key |safe}}
-	      </div>       
-      </div> 
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">xpinfo details</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
 
-      {% endfor %}      
-      </div>
-    </div>
-  </div>
+{% for key in xpinfoKeys %}
+<div class='row'>
+<div class='col-sm-4'>
+{{key}}
+</div> 
+<div class='col-sm-8'>
+{{xpinfo| get_item:key |safe}}
+</div>       
+</div> 
+
+{% endfor %}      
+</div>
+</div>
+</div>
 </div>
 
 
 <div class="modal fade" id='writeNoteModal'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Write a note on this task</h5>
-        <button id='closeNote' type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>You are about to write a note (a comment) that will be saved into the database</p>
-        <p>XPID: <strong>{{exp.xpid}}</strong></p>
-        <p>TASK: <strong id='noteTask'></strong></p>
-        <div class="form-group">
-          <label for="exampleTextarea">your comments here...</label>
-          <textarea class="form-control" id="noteTextarea" rows="10"></textarea>
-        </div>        
-      </div>
-      <div class="modal-footer">
-	        <button id="inputNotebtn" type="button" class="btn btn-primary">Save</button>
-	  </div>
-    </div>
-  </div>
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">Write a note on this task</h5>
+<button id='closeNote' type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<p>You are about to write a note (a comment) that will be saved into the database</p>
+<p>XPID: <strong>{{exp.xpid}}</strong></p>
+<p>TASK: <strong id='noteTask'></strong></p>
+<div class="form-group">
+<label for="exampleTextarea">your comments here...</label>
+<textarea class="form-control" id="noteTextarea" rows="10"></textarea>
+</div>        
+</div>
+<div class="modal-footer">
+<button id="inputNotebtn" type="button" class="btn btn-primary">Save</button>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="modal fade" id='saveFilterModal'>
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Save filter inside url</h5>
-        <button id='closeNote' type="button" class="close" data-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
-      <div class="modal-body">
-	      <input class="form-control" id="readOnlyInput" type="text" placeholder="" readonly="">
-      </div>
-    </div>
-  </div>
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">Save filter inside url</h5>
+<button id='closeNote' type="button" class="close" data-dismiss="modal" aria-label="Close">
+</button>
+</div>
+<div class="modal-body">
+<input class="form-control" id="readOnlyInput" type="text" placeholder="" readonly="">
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -248,130 +249,351 @@
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'js/jquery.easing.min.js' %}"></script> 
 <script src="{% static 'js/jquery.dataTables.min.js' %}"></script> 
+<script src="{% static 'js/d3.v7.min.js' %}"></script>
 
 <script>
 $(document).ready( function () {
-	
+		var popup=d3.select('#popup');
+		var svgDatas={};	
+		const margin = {gp: {top: 5, right: 25, bottom: 5, left: 25},
+		sp: {top: 50, right: 50, bottom: 50, left: 50}} ;
 		$('.writeNote').click(function () {
-			var task=$(this).data('value');
-			$('#noteTask').text(task);
-		});	
-	    $('#inputNotebtn').click(function () {
-	    	var xpid = "{{exp.xpid}}";
-	    	var task = $('#noteTask').text();
-	    	var message = $('#noteTextarea').val();
-	        $.ajax({
-			url: '/davai/addNote/',
-	            data: {
-	              'xpid': xpid,
-	              'task':task,
-	              'message':message,
-	            },
-	            dataType: 'json',
-	            success: function (data) {
-	              if (data.error) {
-	                  
-	                  alert(data.error);
-	              }        
-	              if (data.message) {
-	            	  alert(data.message);
-	            	  $('#closeNote').click();
-	              }
-	            }
-	          });   
-	    });
-	    
-		var table1=$('#tableview1').DataTable({		
-			 "lengthMenu": [[-1], [ "All"]],
-			 fixedHeader: true,
-		  "language": {
-			    "zeroRecords": "No tasks corresponding to request",
-			    "search": "Filter",
-			  } ,
-			"order": [[ 1, "desc" ]],
+				var task=$(this).data('value');
+				$('#noteTask').text(task);
+				});	
+		$('#inputNotebtn').click(function () {
+				var xpid = "{{exp.xpid}}";
+				var task = $('#noteTask').text();
+				var message = $('#noteTextarea').val();
+				$.ajax({
+url: '/davai/addNote/',
+data: {
+'xpid': xpid,
+'task':task,
+'message':message,
+},
+dataType: 'json',
+success: function (data) {
+if (data.error) {
+
+alert(data.error);
+}        
+if (data.message) {
+alert(data.message);
+$('#closeNote').click();
+}
+}
+});   
+});
+
+var table1=$('#tableview1').DataTable({		
+		"lengthMenu": [[-1], [ "All"]],
+		fixedHeader: true,
+		"language": {
+		"zeroRecords": "No tasks corresponding to request",
+		"search": "Filter",
+		} ,
+		"order": [[ 0, "desc" ]],
 		});  
-		var tables=$('.customTables').DataTable({		
-			 "lengthMenu": [[-1], [ "All"]],
-			 fixedHeader: true,
-		  "language": {
-			    "zeroRecords": "No tasks corresponding to request",
-			    "search": "Filter",
-			  } ,
-			"order": [[ 0, "asc" ]],
+var tables=$('.customTables').DataTable({		
+		"lengthMenu": [[-1], [ "All"]],
+		fixedHeader: true,
+		"language": {
+		"zeroRecords": "No tasks corresponding to request",
+		"search": "Filter",
+		} ,
+		"order": [[ 0, "asc" ]],
 		});  
-		$('.filterClick').click(function () {
-			var filter = $(this).prop('value');
-			table1.search( filter ).draw();
+$('.filterClick').click(function () {
+		var filter = $(this).prop('value');
+		table1.search( filter ).draw();
 		});	
-	        $('.filterSave').click(function () {
-		    var url=window.location.href.split('?')[0];
-		    $("#readOnlyInput").val(url+'?filter='+$("#tableview1_filter input").val());
+$('.filterSave').click(function () {
+		var url=window.location.href.split('?')[0];
+		$("#readOnlyInput").val(url+'?filter='+$("#tableview1_filter input").val());
 		});
-		var url = new URL($(location).attr('href'));
-		var filterArg = url.searchParams.get("filter");
-	        if(filterArg){
-			table1.search( filterArg ).draw();
-		};
-		$('.ajaxClickDetail').click(function () {
-			var modalId = $(this).prop('id').split('_')[1];
-			var tabid = $(this).attr('data-tabid');
+var url = new URL($(location).attr('href'));
+var filterArg = url.searchParams.get("filter");
+if(filterArg){
+	table1.search( filterArg ).draw();
+};
+$('.ajaxClickDetail').click(function () {
+		var modalId = $(this).prop('id').split('_')[1];
+		var tabid = $(this).attr('data-tabid');
 
-			$("#ajaxDetail_"+modalId).click();
-                        $("#taskDetail_"+modalId+" .nav-tabs  li:nth-child("+tabid+") a").click();
+		$("#ajaxDetail_"+modalId).click();
+		$("#taskDetail_"+modalId+" .nav-tabs  li:nth-child("+tabid+") a").click();
 
 		});
-		$('.ajaxDetail').click(function () {
-			var modalId = $(this).prop('id').split('_')[1];
-			$('body').addClass('cursorWait');
-	        $.ajax({
-			url: '/davai/ajaxLoadModal/',
-	            data: {
-	              'ciboulexpId': {{exp.pk}},
-	              'modalId':modalId,
-	            },
-	            dataType: 'json',
-	            success: function (data) {
-	              if (data.error) {
-	                  alert(data.error);
-	              }else{        
-	            	  $("#taskDetailTab1_"+modalId).html(data.reponse.itself);
-	            	  $("#taskDetailTab2_"+modalId).html(data.reponse.continuity);
-			  if(data.reponse.consistency){
-	                    $("#navTaskDetailTab3_"+modalId).removeClass("d-none");
-	                    $("#taskDetailTab3_"+modalId).html(data.reponse.consistency);
-			  }
-                      var tables=$('#taskDetailTab1_'+modalId+' .customTables').DataTable({
-                          "lengthMenu": [[-1], [ "All"]],
-                         fixedHeader: true,
-                 "language": {
-                      "zeroRecords": "No tasks corresponding to request",
-                      "search": "Filter",
-                    } ,
-                  "order": [[ 0, "asc" ]],
-                 });
-                   var tables=$('#taskDetailTab2_'+modalId+' .customTables').DataTable({
-                          "lengthMenu": [[-1], [ "All"]],
-                         fixedHeader: true,
-                 "language": {
-                      "zeroRecords": "No tasks corresponding to request",
-                      "search": "Filter",
-                    } ,
-                  "order": [[ 0, "asc" ]],
-                 });
-			$('body').removeClass('cursorWait');
-
-	              }
-	            }
-	          });   		
-	        });
+$('.ajaxDetail').click(function () {
+		var modalId = $(this).prop('id').split('_')[1];
+		$('body').addClass('cursorWait');
+		$.ajax({
+url: '/davai/ajaxLoadModal/',
+data: {
+'ciboulexpId': {{exp.pk}},
+'modalId':modalId,
+},
+dataType: 'json',
+success: function (data) {
+if (data.error) {
+alert(data.error);
+}else{        
+$("#taskDetailTab1_"+modalId).html(data.reponse.itself[0]);
+$("#taskDetailTab2_"+modalId).html(data.reponse.continuity[0]);
+if(data.reponse.consistency){
+$("#navTaskDetailTab3_"+modalId).removeClass("d-none");
+$("#taskDetailTab3_"+modalId).html(data.reponse.consistency[0]);
+}
+var tables=$('#taskDetailTab1_'+modalId+' .customTables').DataTable({
+	"lengthMenu": [[-1], [ "All"]],
+	fixedHeader: true,
+	"language": {
+	"zeroRecords": "No tasks corresponding to request",
+	"search": "Filter",
+	} ,
+	"order": [[ 0, "asc" ]],
 	});
+var tables=$('#taskDetailTab2_'+modalId+' .customTables').DataTable({
+		"lengthMenu": [[-1], [ "All"]],
+		fixedHeader: true,
+		"language": {
+		"zeroRecords": "No tasks corresponding to request",
+		"search": "Filter",
+		} ,
+		"order": [[ 0, "asc" ]],
+		});
+$('body').removeClass('cursorWait');
+//put svg datas 
+svgDatas={...data.reponse.continuity[1], ...data.reponse.consistency[1]};
+generateSvgs();
+}
+}
+});   		
+});
+function generateSvgs(){
+	d3.selectAll('circle').remove();
+	d3.selectAll('path').remove();
+	d3.selectAll('.curve').remove();
+	d3.selectAll('.grid').remove();
+	d3.selectAll('.axis').remove();
+	d3.selectAll('.tick').remove();
+	const width={"gp":300,"sp":1400};
+	const height={"gp":50,"sp":300};
+
+	var svgDataSave=svgDatas;
+	jumps={};
+	for (const identifier of Object.keys(svgDatas)) {
+		jumps[identifier]={};
+		var kind='gp';
+		fields=Object.keys(svgDatas[identifier][kind].fields);
+		nbFields=fields.length;
+		for (const field of fields) {
+			var dvgIndex=9999;
+			var dvgJump=0;
+			for (let step = 0; step < svgDatas[identifier][kind].fields[field].length; step++) {
+				if (svgDatas[identifier][kind].fields[field][step][1]>0){
+					dvgJump=svgDatas[identifier][kind].fields[field][step][1];
+					dvgIndex=svgDatas[identifier][kind].fields[field][step][0].toString();
+					break;
+				}
+
+			}
+			if (!(jumps[identifier].hasOwnProperty(dvgIndex))){
+				jumps[identifier][dvgIndex]={};
+			}
+			jumps[identifier][dvgIndex][field]=dvgJump;
+		}
+	}
+
+
+
+
+	for (const identifier of Object.keys(svgDatas)) {
+		//for (const kind of Object.keys(svgDatas[identifier])){
+		for (const kind of ["sp","gp"]){
+
+			var width_margin = width[kind] - margin[kind].left - margin[kind].right;
+			var height_margin = height[kind] - margin[kind].top - margin[kind].bottom;
+			///GENERIC OBJETCS FOR BOTH GP AND SP
+			var xScale=d3.scaleLinear().range([0, width_margin]).domain([0,svgDatas[identifier][kind].steps.length]);
+			var yScale=d3.scaleLinear().range([height_margin,0]).domain([0,15]);
+			function make_x_axis() {
+				return d3.axisBottom()
+					.scale(d3.scaleLinear().range([0, width_margin]).domain(xScale))
+					.ticks(10)
+			}
+
+			function make_y_axis() {
+				return d3.axisLeft()
+					.scale(yScale)
+					.ticks(10)
+			}
+			line=d3.line()
+				.curve(d3.curveLinear)
+				.x(function(d) {
+						return xScale(d[0]);
+						})
+			.y(function(d) {
+					return yScale(d[1]);
+					});
+			fields=Object.keys(svgDatas[identifier][kind].fields);
+			nbFields=fields.length;
+
+			if (kind=='gp'){
+				var stri="<h3  class='mt-5'>Gridpoint norms</h3><table class='gpTable'><thead><tr><th>field</th><th>diverging step</th><th>diverging step index</th><th>Graph</th></tr></thead><tbody>";
+				for (const dvgIndex of Object.keys(jumps[identifier])){
+					for (const field of Object.keys(jumps[identifier][dvgIndex])){
+						var fieldIndex=fields.indexOf(field);
+						stri+="<tr><td>"+field+"</td><td>"+svgDatas[identifier][kind].steps[parseInt(dvgIndex)]+"</td><td>"+dvgIndex+"</td><td><svg id='svggp_"+identifier+"_"+kind+"_"+fieldIndex+"' width='"+width[kind]+"' height='"+height[kind]+"'></svg></td></tr>";
+					}
+				}
+				stri+="</tbody></table>";
+				$("#svgid_"+identifier).append(stri);
+
+			}else{
+				$("#svgid_"+identifier).append("<h3 class='mt-5'>Spectral norms</h3><svg class='col-lg-12' width='"+width[kind]+"' height='"+height[kind]+"' id='svg_"+identifier+"_"+kind+"'></svg>");
+
+				var stri="<div>";
+				for (const field of fields) {
+					var fieldIndex=fields.indexOf(field);
+					var color=d3.interpolateTurbo(fieldIndex/nbFields);
+					stri+="<span class='badge' style='color:"+color+";'>"+field+"</span>"
+				}
+				stri+="</div>";
+				$("#svgid_"+identifier).append(stri);
+
+
+				var svg = d3.select("#svg_"+identifier+"_"+kind);
+				var g = svg.append("g").attr("transform", "translate(" + margin[kind].left + "," + margin[kind].top + ")");
+				g.append("g")
+					.attr("class", "axis axis--x")
+					.attr("transform", "translate( 0 ," + height_margin + ")")
+					.call(d3.axisBottom(xScale));
+				g.append("g")
+					.attr("class", "grid")
+					.attr("transform", "translate( 0 ," + height_margin + ")")
+					.call(make_x_axis()
+							.tickSize(-height_margin)
+							.tickFormat(""));
+
+				g.append("g")
+					.attr("class", "axis axis--y")
+					.call(d3.axisLeft(yScale))
+					.append("text")
+					.attr("transform", "rotate(-90)")
+					.attr("y", 6)
+					.attr("dy", "0.71em")
+					.attr("fill", "#000");
+				g.append("g")
+					.attr("class", "grid")
+					.call(make_y_axis()
+							.tickSize(-width_margin)
+							.tickFormat(""));
+
+			}
+
+
+
+
+			for (const field of fields) {
+				var fieldIndex=fields.indexOf(field);
+				if (kind=='gp'){
+					console.log(field);
+					//continue;
+					//in case of gp one svg per field
+					var svg = d3.select("#svggp_"+identifier+"_"+kind+"_"+fieldIndex);
+					var g = svg.append("g").attr("transform", "translate(" + margin[kind].left + "," + margin[kind].top + ")");
+					g.append("g")
+						.attr("class", "axis axis--y")
+						.call(d3.axisLeft(yScale).ticks(4))
+						.append("text")
+						.attr("transform", "rotate(-90)")
+						.attr("y", 4)
+						.attr("dy", "0.71em")
+						.attr("fill", "#000");
+					g.append("g")
+						.attr("class", "grid")
+						.call(make_y_axis()
+								.tickSize(-width_margin)
+								.ticks(4)
+								.tickFormat(""));
+
+				}
+				var color=d3.interpolateTurbo(fieldIndex/nbFields);
+				var fCurve = g.selectAll(".curve_"+kind+"_"+fieldIndex)
+					.data([svgDatas[identifier][kind].fields[field]])
+					.enter().append("g")
+					.attr("class", "curve curve_"+kind+"_"+fieldIndex);
+				fCurve.append("path")
+					.attr("class", "line")
+					.style("stroke", function(d,i) {
+							return color;
+							})
+				.attr("d", function(d) {
+						return line(d)
+						});
+
+				var pointsDetail=g.selectAll(".points_"+kind+"_"+fieldIndex)
+					.data(svgDatas[identifier][kind].fields[field])
+					.enter().append("circle").attr("r", 4).attr("cx", function(d,i) {
+							return xScale(d[0]);
+							; })
+					.attr("cy", function(d) {
+							return yScale(d[1]);
+							}).attr("class", "points_"+kind+"_"+fieldIndex)
+				.style("fill", function(d) {
+						return color;
+						})
+
+				.on("mouseover", function(m,d){
+						popup.transition()
+						.duration(200)
+						.style("opacity", .9);
+						popup.html(
+								"<p>field: "+field+"</p>"+
+								"<p>X: "+svgDatas[identifier][kind].steps[d[0]]+"</p>"
+							  )            .style("left", (event.pageX + 30) + "px")
+						.style("top", (event.pageY - 30) + "px")       ;
+
+						return 0;})
+					.on("mouseout",function(d,i){
+							popup.transition()
+							.duration(500)
+							.style("opacity", 0);
+							return 0;});
+			}
+
+		}
+
+
+	}
+	var table=$('.gpTable').DataTable({
+			"lengthMenu": [[-1], [ "All"]],
+			fixedHeader: true,
+			//                        columns: [null,null,null,null,{ width: width.gp}],
+			"language": {
+			"zeroRecords": "No tasks corresponding to request",
+			"search": "Filter",
+			} ,
+			"order": [[ 2, "asc" ]],
+			});
+
+
+
+
+	}
+
+
+
+});
 
 </script>
 
 {% endblock %}
 
-    
-      
+
+
 
 </body>
 

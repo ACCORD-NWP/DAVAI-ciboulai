@@ -29,8 +29,10 @@ myhost = os.uname()[1]
 DEBUG = myhost=="sxobs1"
 if myhost=="sxobs1":
     dbname="sxobs1.sqlite3"
+    olddbname="oldsxobs1.sqlite3"
 else:
     dbname="davaiprod.db.sqlite3"
+    olddbname="davaiprod.db.sqlite3"
 #DEBUG = True
 
 ALLOWED_HOSTS = ['www-davai.umr-cnrm.fr','www-davai.cnrm.meteo.fr','0.0.0.0','www-ubuntu-davai.umr-cnrm.fr']
@@ -90,6 +92,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / dbname,
+    },
+    'old': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / olddbname,
     }
 }
 

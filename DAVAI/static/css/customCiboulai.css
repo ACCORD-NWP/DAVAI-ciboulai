@@ -57,3 +57,11 @@ background: #dfe6f9;
 .dataTables_wrapper{
    width:100%;
 }
+path {
+  fill: none;
+  stroke-width: 2px;
+}
+path:hover {
+  stroke-width: 5px;
+}
+

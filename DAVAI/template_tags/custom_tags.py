@@ -313,7 +313,7 @@ def prettyJson2(dictionary):
 
 @register.filter
 def prettyJson3(dictionary):
-
+    svgDatas={}
     tableStri="<div id='accordion'>"
     if hasattr(dictionary,'keys'): 
         tableStri+="<div class='card'>"
@@ -359,6 +359,11 @@ def prettyJson3(dictionary):
                     elif col=='Last step with spectral norms':
                         bigSize='col-lg-12'
                         stri+="<div class='{}'>{}</div>".format(bigSize,dictToNorms(dictionary[table][col]))
+                    elif col=='Table of diverging digits':
+                        bigSize='col-lg-12'
+                        #add id to store svg graph
+                        stri+="<div id='svgid_{}'></div>".format(colId)
+                        svgDatas[colId]=dictionary[table][col]        
 #                    elif col=='DrHookProfile':
 #                        bigSize='col-lg-12'
 #                        stri+="<div class='{}'>{}</div>".format(bigSize,dictToDrHook(dictionary[table][col]))
@@ -382,7 +387,7 @@ def prettyJson3(dictionary):
                 tableStri+=collapsible
         tableStri+="</div>"
     tableStri+='</div>'        
-    return tableStri
+    return tableStri,svgDatas
 
 def dictToString(dict):
     stri="<ul>"
@@ -480,6 +485,13 @@ def dictToNorms(dict):
                         field,'-','-',dict[normtype][field])
 
         stri+="</tbody></table></div>"
+    return stri
+
+def svgGraph(dico):
+    stri=""
+    for k,buf in dico.items():
+       for kind,v in buf.items():
+           stri+="<svg id='{}_{}'></svg>".format(k,kind)
     return stri
 
 def dictToDrHook(dict):
