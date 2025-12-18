@@ -18,10 +18,10 @@
 <thead>
 <th scope="col"><button value="OK" class='btn btn-success filterClick'>OK</button></th>
 <th scope="col"><button value="KO" class='btn btn-danger filterClick'>KO</button></th>
-<th scope="col"><button value="Crashed" class='btn btn-outline-danger filterClick'>Crashed</button></th>
+<th scope="col"><button value="(Crashed|failed)" class='btn btn-outline-danger filterClick'>Crashed</button></th>
 <th scope="col"><button value="?" class='btn btn-warning filterClick'>?</button></th>
 <th scope="col"><button  class='btn btn-secondary'>NC</button></th>
-<th scope="col"><button  class='btn btn-outline-secondary'>Pending</button></th>
+<th scope="col"><button value="(Fetch|done|Running)" class='btn btn-outline-secondary filterClick'>Pending</button></th>
 </tr>
 </thead>
 <tbody>
@@ -43,7 +43,7 @@
 <div class="card p-3">
 <div>
 <button value="Ended" class="btn btn-outline-success filterClick">Ended</button>
-<button value="Crashed" class="btn btn-outline-danger filterClick">Crashed</button>
+<button value="(Crashed|failed)" class="btn btn-outline-danger filterClick">Crashed</button>
 <button value="OK" class="btn btn-success filterClick">OK</button>
 <button value="KO" class="btn btn-danger filterClick">KO</button>
 <button value="! Comp Issue !" class="btn btn-orange filterClick">!</button>
@@ -294,6 +294,10 @@ var table1=$('#tableview1').DataTable({
 		"search": "Filter",
 		} ,
 		"order": [[ 0, "desc" ]],
+                "search": {
+                         "regex": true,
+                },
+
 		});  
 var tables=$('.customTables').DataTable({		
 		"lengthMenu": [[-1], [ "All"]],
