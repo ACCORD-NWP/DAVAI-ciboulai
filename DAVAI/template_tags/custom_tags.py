@@ -323,7 +323,7 @@ def prettyJson3(dictionary):
             collapsible="<div class='card-header' id='{}'>".format(headId)
             collapsible+="<h5 class='mb-0'><button class='btn btn-link' data-toggle='collapse' data-target='#{}' aria-expanded='false' aria-controls='{}'>{}</button></h5></div>".format(colId,colId,table)
             collapsible+="<div id='{}' class='collapse' aria-labelledby='{}' data-parent='#accordion'>".format(colId,headId)
-            if hasattr(dictionary[table],'keys'): 
+            if hasattr(dictionary[table],'keys'):
                 stri=""                 
                 for col in sorted(dictionary[table].keys()):
                     littleSize='col-lg-2'
@@ -334,12 +334,11 @@ def prettyJson3(dictionary):
                     stri+="<div class='row'>"
                     stri+="<div class='{}'>{}</div>".format(littleSize,col)
                     
-                    
-                    
                     #---------
 #                    dictionnaryKeys=dictionary.keys()
 #                    dictionnaryTableKeys=dictionary[table].keys()
                     #----------
+                    # TODO??
                     
                     if col == 'Jo-Tables':
                         bigSize='col-lg-12'
@@ -353,6 +352,9 @@ def prettyJson3(dictionary):
 #                    elif col=='Observation counts':
 #                        bigSize='col-lg-12'
 #                        stri+="<div class='{}'>{}</div>".format(bigSize,dictToBator(dictionary[table][col]))
+                    elif "Observation" in col or "Differences in obs counts" in col:
+                        bigSize='col-lg-12'
+                        stri+="<div class='{}'>{}</div>".format(bigSize,dictToObsCount(dictionary[table][col]))
                     elif col=='Task listing uri(s)' or col=='Compare listings at uri(s)':
                         bigSize='col-lg-12'
                         stri+="<div class='{}'>{}</div>".format(bigSize,dictToDiffBtn(dictionary[table][col]))
@@ -550,6 +552,35 @@ def dictToJotables(dict,itself=True):
         stri+="</tbody></table></div>"
     return stri
 
+def dictToObsCount(dico):
+    stri="<table class='table table-hover customTables'>"
+    stri+="<thead><tr><th>obstype</th><th>odbbase</th><th>subobstype</th><th>count</th></tr></thead><tbody>"
+    for obstype in dico.keys():
+        varList=list(dico[obstype].keys())
+        total=dico[obstype]["Total"]
+        pools=dico[obstype]["Number of Pools"]
+        varList.remove('Number of Pools')
+        varList.remove('Total')
+        if len(varList)==0:
+            odbbases=["-"]
+        else:
+            odbbases=varList
+
+        for odbbase in odbbases:
+            if odbbase not in dico[obstype]:
+                if int(total)>0:
+                    stri+="<tr><th>{}</th><td>{}</td><td>{}</td><td>{}</td></tr>".format(obstype,odbbase," - ",total)
+            else:
+                subobstypes=list(dico[obstype][odbbase].keys())
+                subtotal=dico[obstype][odbbase]['SubTotal']
+                for subobstype in subobstypes:
+                    if subobstype.startswith('observations') or subobstype.startswith('SubTotal'):
+                        continue
+                    if int(dico[obstype][odbbase][subobstype])>0:
+                        stri+="<tr><th>{}</th><td>{}</td><td>{}</td><td>{}</td></tr>".format(obstype,odbbase,subobstype,dico[obstype][odbbase][subobstype])
+
+    stri+="</tbody></table></div>"
+    return stri
 
 def listToString(list):
     stri="<ul>"
