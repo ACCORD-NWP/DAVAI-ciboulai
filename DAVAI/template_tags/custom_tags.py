@@ -354,7 +354,11 @@ def prettyJson3(dictionary):
 #                        stri+="<div class='{}'>{}</div>".format(bigSize,dictToBator(dictionary[table][col]))
                     elif "Observation" in col or "Differences in obs counts" in col:
                         bigSize='col-lg-12'
-                        stri+="<div class='{}'>{}</div>".format(bigSize,dictToObsCount(dictionary[table][col]))
+                        if isinstance(dictionary[table][col],dict):
+                            stri+="<div class='{}'>{}</div>".format(bigSize,dictToObsCount(dictionary[table][col]))
+                        else:
+                            stri+="<div class='{}'>{}</div>".format(bigSize,dictionary[table][col])
+
                     elif col=='Task listing uri(s)' or col=='Compare listings at uri(s)':
                         bigSize='col-lg-12'
                         stri+="<div class='{}'>{}</div>".format(bigSize,dictToDiffBtn(dictionary[table][col]))
