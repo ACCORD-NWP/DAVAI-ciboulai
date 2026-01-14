@@ -369,7 +369,13 @@ var tables=$('#taskDetailTab2_'+modalId+' .customTables').DataTable({
 		});
 $('body').removeClass('cursorWait');
 //put svg datas 
+
+if (data.reponse.hasOwnProperty("consistency")){
 svgDatas={...data.reponse.continuity[1], ...data.reponse.consistency[1]};
+}else{
+svgDatas=data.reponse.continuity[1];
+}
+
 generateSvgs();
 }
 }
