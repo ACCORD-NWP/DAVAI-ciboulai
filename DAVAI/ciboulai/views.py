@@ -179,14 +179,21 @@ def CiboulexpLightView(request,cid):
 
 
 
-def getSummary(request):
+def getSummary(request,xpid_or_cid):
     if request.method == 'POST':
         pass
     else:
-        xpid = str(request.GET.get('xpid', None))
-        jsonSummary=importSummary(xpid)
-        #the content exist
-        return JsonResponse(jsonSummary)     
+        summary={}
+        if Ciboulexp.objects.filter(xpid=xpid_or_cid).exists():
+            exp=Ciboulexp.objects.get(xpid=xpid_or_cid)
+        else:
+            try:
+                theid=int(xpid_or_cid)
+                exp=Ciboulexp.objects.get(pk=theid)
+            except:
+                return JsonResponse({"message":"Ciboulexp {} do no exists".format(xpid_or_cid)})
+        summary={"id":exp.pk,"updated":exp.updated,"message":"OK","summary":exp.jsonSummary,"user":exp.user,"reference":exp.reference.xpid,"xpid":exp.xpid}
+        return JsonResponse(summary)     
     
 def addNote(request):
     if request.method == 'POST':

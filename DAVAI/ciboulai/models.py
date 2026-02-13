@@ -41,6 +41,16 @@ class Ciboulexp(models.Model):
     @property
     def symbolSummary_nan(self):
         return self.symbolSummary('NAN')
+  
+    @property
+    def jsonSummary(self):
+        total= TaskInstance.objects.filter(expRef=self)
+        totalCount=total.count()
+        ans={"sum":totalCount,"ok":0,"ko":0,"cr":0,"tc":0,"nc":0,"NAN":0}
+
+        for t in total:
+            ans[t.symbol]+=1
+        return ans 
 
     def symbolSummary(self,code='ok'):
         cssClass=""
