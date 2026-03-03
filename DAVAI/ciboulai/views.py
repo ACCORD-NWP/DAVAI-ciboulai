@@ -118,6 +118,7 @@ def CiboulexpLightView(request,cid):
         exp=Ciboulexp.objects.get(pk=cid)
     
         globalDico2={}
+        globalSymbols={}
         for ti in TaskInstance.objects.filter(expRef=exp):
             try:
                 td=json.loads(ti.jsonTask)
@@ -125,6 +126,7 @@ def CiboulexpLightView(request,cid):
                 td={'error':'error in json.loads'}
 
             globalDico2[ti.taskRef]=td
+            globalSymbols[ti.taskRef]=ti.symbol
 
         #----
 
@@ -132,6 +134,7 @@ def CiboulexpLightView(request,cid):
         headers=[
     ("update", "timestamp of latest update of the task"),
     ("task", "identifier of the task, described by a series of attributes such as job prefix/sequence, model, kind of task, families, compiler flavours etc..."),
+#    ("symbol", "symbol of the task"),
     ("status", "status of the task"),
     ("continuity", "comparison to the same task of a reference experiment"),
     ("consistency", "(occasional) comparison to another task of the same experiment"),
@@ -164,6 +167,7 @@ def CiboulexpLightView(request,cid):
             'xpinfo':xpinfo,
 #            'solo':globalDico,
             'globalDico':globalDico2,
+            'globalSymbols':globalSymbols,
             'headers':headers,
             'headersSolo':headersSolo,
             'notes':notes,
@@ -195,6 +199,24 @@ def getSummary(request,xpid_or_cid):
         summary={"id":exp.pk,"updated":exp.updated,"message":"OK","summary":exp.jsonSummary,"user":exp.user,"reference":exp.reference.xpid,"xpid":exp.xpid}
         return JsonResponse(summary)     
     
+def updateSymbols(request,xpid_or_cid):
+    if request.method == 'POST':
+        pass
+    else:
+        summary={}
+        if Ciboulexp.objects.filter(xpid=xpid_or_cid).exists():
+            exp=Ciboulexp.objects.get(xpid=xpid_or_cid)
+        else:
+            try:
+                theid=int(xpid_or_cid)
+                exp=Ciboulexp.objects.get(pk=theid)
+            except:
+                return JsonResponse({"message":"Ciboulexp {} do no exists".format(xpid_or_cid)})
+        for ti in TaskInstance.objects.filter(expRef=exp):
+            ti.updateSymbol()
+        return JsonResponse({'message':'done'})
+
+
 def addNote(request):
     if request.method == 'POST':
         pass

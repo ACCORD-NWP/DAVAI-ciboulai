@@ -16,12 +16,13 @@
 <div class='col-md-6'>
 <table class="table text-center">
 <thead>
-<th scope="col"><button value="OK" class='btn btn-success filterClick'>OK</button></th>
-<th scope="col"><button value="KO" class='btn btn-danger filterClick'>KO</button></th>
-<th scope="col"><button value="(Crashed|failed)" class='btn btn-outline-danger filterClick'>Crashed</button></th>
-<th scope="col"><button value="?" class='btn btn-warning filterClick'>?</button></th>
-<th scope="col"><button  class='btn btn-secondary'>NC</button></th>
-<th scope="col"><button value="(Fetch|done|Running)" class='btn btn-outline-secondary filterClick'>Pending</button></th>
+<th scope="col"><button value="symbol=ok" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Validated tasks' class='btn btn-success filterClick'>OK</button></th>
+<th scope="col"><button value="symbol=ko" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Tasks with differing results' class='btn btn-danger filterClick'>KO</button></th>
+<th scope="col"><button value="symbol=cr" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Crashed tasks' class='btn btn-outline-danger filterClick'>Crashed</button></th>
+<th scope="col"><button value="symbol=se" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Scripting Error'class='btn btn-orange filterClick'>!</button></th>
+<th scope="col"><button value="symbol=tc" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Tasks with undefined status... To be checked'class='btn btn-warning filterClick'>?</button></th>
+<th scope="col"><button  value="symbol=nc"data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Tasks without an expert or without reference, to produce status' class='btn btn-secondary filterClick'>NC</button></th>
+<th scope="col"><button value="symbol=NAN" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Tasks pending' class='btn btn-outline-secondary filterClick'>PD</button></th>
 </tr>
 </thead>
 <tbody>
@@ -29,6 +30,7 @@
 {{exp.symbolSummary_ok| safe }}
 {{exp.symbolSummary_ko| safe }}
 {{exp.symbolSummary_cr| safe }}
+{{exp.symbolSummary_se| safe }}
 {{exp.symbolSummary_tc| safe }}
 {{exp.symbolSummary_nc| safe }}
 {{exp.symbolSummary_nan| safe }}
@@ -41,15 +43,14 @@
 <span>{{notes | length}} notes on <a href="/davai/lightView/{{exp.pk}}">{{exp.xpid}}</a><a  href="#"  data-value="XP" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a global comment about this experiment!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a></p><p>{{notes | note_btn:"XP" | safe }}</span>
 
 <div class="card p-3">
-<div>
+<div class="d-none">
 <button value="Ended" class="btn btn-outline-success filterClick">Ended</button>
 <button value="(Crashed|failed)" class="btn btn-outline-danger filterClick">Crashed</button>
 <button value="OK" class="btn btn-success filterClick">OK</button>
 <button value="KO" class="btn btn-danger filterClick">KO</button>
 <button value="! Comp Issue !" class="btn btn-orange filterClick">!</button>
-<button value="? Unknown ?" class="btn btn-warning filterClick">?</button>
+<button value="Unknown" class="btn btn-warning filterClick">?</button>
 <button value="" class="float-right btn btn-secondary filterSave" data-toggle="modal" data-target="#saveFilterModal" ><i class='fas fa-save fa-fw'></i>Save filters</button>
-<button value="" class="float-right btn btn-primary filterClick"><i class='fas fa-times fa-fw'></i>Reset filters</button>
 </div>
 <div id="accordion_filter" class="mb-3 mt-3">
 <div class="card">
@@ -58,6 +59,7 @@
 {% for i in filterClick %}
 <button value="{{i}}" class="btn filterClick">{{i}}</button>
 {% endfor %}
+<button value="" class="float-right btn btn-primary filterClick"><i class='fas fa-times fa-fw'></i>Reset filters</button>
 </div>
 </div>
 </div>
@@ -80,7 +82,7 @@
 <td><a data-toggle="modal" data-target="#taskDetail_{{forloop.counter}}" class="ajaxDetail" id="ajaxDetail_{{forloop.counter}}" href="#" data-id="ajaxDetail_{{forloop.counter}}" >{{key}}</a> <a href="/davai/taskView/{{key.pk}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="view the same task in other experiments" ><i class='fas fa-database fa-fw'></i></a>
 <a  href="#"  data-value="{{key}}" class='btn btn-default writeNote' data-toggle="modal" data-target="#writeNoteModal"><i data-toggle="tooltip" data-placement="top" title="" data-original-title="Leave a comment about this task!" class="fas fa-fw fa-pencil-alt"></i>&nbsp;</a>
 {{notes | note_btn:key.name | safe}}
-
+<span class='d-none'>symbol={{globalSymbols|get_item:key| safe}}</span>
 
 </td>
 <td>{{value.itself.Status | status_btn:forloop.counter | safe}}</td>

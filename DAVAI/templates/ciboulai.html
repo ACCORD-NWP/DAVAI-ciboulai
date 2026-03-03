@@ -89,12 +89,13 @@
 			      <th scope="col">SUBMIT DATE</th>
 			      <th scope="col">LAST UPDATE</th>
 			      <th scope="col">USECASE</th>
-			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks pending' class='btn btn-outline-secondary'>PD</button></th>
 			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Validated tasks' class='btn btn-success'>OK</button></th>
 			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks with differing results' class='btn btn-danger'>KO</button></th>
 			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Crashed tasks' class='btn btn-outline-danger'>Crashed</button></th>
+			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Scripting Error' class='btn btn-orange'>!</button></th>
 			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks with undefined status... To be checked' class='btn btn-warning'>?</button></th>
 			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks without an expert or without reference, to produce status. To be checked' class='btn btn-secondary'>NC</button></th>
+			      <th scope="col"><button data-toggle='tooltip' data-placement='top' title='' data-original-title='Tasks pending' class='btn btn-outline-secondary'>PD</button></th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -114,12 +115,13 @@
 			      <td> {{exp.xpinfo | get_item:"initial_time_of_launch" | dateUpdate |safe}} </td>
 			      <td> {{exp.updated | date:"Y-m-d H:i:s" }} </td>
 			      <td> <a class='filterClick' href='#ref_{{exp.xpinfo | get_item:"usecase" |safe}}'><button class="btn btn-outline"> {{exp.xpinfo | get_item:"usecase" |safe}} </button></a> </td>
-			      {{exp.symbolSummary_nan| safe }} 
 			      {{exp.symbolSummary_ok| safe }} 
 			      {{exp.symbolSummary_ko| safe }} 
 			      {{exp.symbolSummary_cr| safe }} 
+			      {{exp.symbolSummary_se| safe }} 
 			      {{exp.symbolSummary_tc| safe }} 
 			      {{exp.symbolSummary_nc| safe }} 
+			      {{exp.symbolSummary_nan| safe }} 
 			    </tr>
 			    
 			    {% endfor %} 

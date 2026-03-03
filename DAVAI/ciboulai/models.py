@@ -35,6 +35,9 @@ class Ciboulexp(models.Model):
     def symbolSummary_tc(self):
         return self.symbolSummary('tc')
     @property
+    def symbolSummary_se(self):
+        return self.symbolSummary('se')
+    @property
     def symbolSummary_nc(self):
         return self.symbolSummary('nc')
     
@@ -46,7 +49,7 @@ class Ciboulexp(models.Model):
     def jsonSummary(self):
         total= TaskInstance.objects.filter(expRef=self)
         totalCount=total.count()
-        ans={"sum":totalCount,"ok":0,"ko":0,"cr":0,"tc":0,"nc":0,"NAN":0}
+        ans={"sum":totalCount,"ok":0,"ko":0,"cr":0,"tc":0,"se":0,"nc":0,"NAN":0}
 
         for t in total:
             ans[t.symbol]+=1
@@ -59,7 +62,7 @@ class Ciboulexp(models.Model):
         if count > 0:
             if code=='ko':
                 cssClass='table-danger'
-            elif (code=="cr" or code=='tc'):
+            elif (code=="cr" or code=='tc' or code=='se'):
                 cssClass='table-warning'
             elif code=='ok':
                 cssClass='table-success'
@@ -81,8 +84,10 @@ class Task(models.Model):
 symbolToCode={
     'OK':'ok',
     'KO':'ko',
+    'F':'ko',
     '?':'tc',
-    '!':'tc',
+    '!':'se',  # scripting error
+    'IF':'se',  # scripting error
     '+':'tc',
     'X':'cr',
     'X=R':'cr',
@@ -91,6 +96,17 @@ symbolToCode={
     '-':'nc',
     'E!':'tc',
     }
+
+
+def getOrValue(dico, argList, val):
+    """get value in dict or return default val"""
+    buf = dico
+    for item in argList:
+        try:
+            buf = buf[item]
+        except Exception:
+            return val
+    return buf
 
 
 class TaskInstance(models.Model):
@@ -119,11 +135,13 @@ class TaskInstance(models.Model):
                     if j['continuity'].get('comparisonStatus') is None:
                         sym='tc'
                     else:
-                        l=[j['continuity']['comparisonStatus']['symbol'],j['consistency']['comparisonStatus']['symbol']]
+                        l=[getOrValue(j,['continuity','comparisonStatus','symbol'],None),getOrValue(j,['consistency','comparisonStatus','symbol'],None)]
                         if 'KO' in l:
                             sym='ko'
-                        elif '?' in l or '!' in l:
+                        elif '?' in l:
                             sym='tc'
+                        elif '!' in l:
+                            sym='se'
                         elif 'OK' in l:
                             sym='ok'
                         else:
