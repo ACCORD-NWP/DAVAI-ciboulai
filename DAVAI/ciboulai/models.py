@@ -42,14 +42,14 @@ class Ciboulexp(models.Model):
         return self.symbolSummary('nc')
     
     @property
-    def symbolSummary_nan(self):
-        return self.symbolSummary('NAN')
+    def symbolSummary_pd(self):
+        return self.symbolSummary('pd')
   
     @property
     def jsonSummary(self):
         total= TaskInstance.objects.filter(expRef=self)
         totalCount=total.count()
-        ans={"sum":totalCount,"ok":0,"ko":0,"cr":0,"tc":0,"se":0,"nc":0,"NAN":0}
+        ans={"sum":totalCount,"ok":0,"ko":0,"cr":0,"tc":0,"se":0,"nc":0,"pd":0}
 
         for t in total:
             ans[t.symbol]+=1
@@ -113,7 +113,7 @@ class TaskInstance(models.Model):
     taskRef=models.ForeignKey("Task",blank=True,on_delete=models.CASCADE,null=True)
     jsonTask=models.TextField(blank=True)
     expRef=models.ForeignKey("Ciboulexp",blank=True,on_delete=models.CASCADE,null=True)
-    symbol=models.CharField(max_length=3,default='NAN')
+    symbol=models.CharField(max_length=3,default='pd')
     updated = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = u'main_taskinstance'
@@ -124,7 +124,7 @@ class TaskInstance(models.Model):
 
     def updateSymbol(self):
         j=json.loads(self.jsonTask)
-        sym='NAN'
+        sym='pd'
         try:
             if j['itself']['Status']['symbol']!="E":
                 sym=symbolToCode[j['itself']['Status']['symbol']]

@@ -22,7 +22,7 @@
 <th scope="col"><button value="symbol=se" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Scripting Error'class='btn btn-orange filterClick'>!</button></th>
 <th scope="col"><button value="symbol=tc" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Tasks with undefined status... To be checked'class='btn btn-warning filterClick'>?</button></th>
 <th scope="col"><button  value="symbol=nc"data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Tasks without an expert or without reference, to produce status' class='btn btn-secondary filterClick'>NC</button></th>
-<th scope="col"><button value="symbol=NAN" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Tasks pending' class='btn btn-outline-secondary filterClick'>PD</button></th>
+<th scope="col"><button value="symbol=pd" data-toggle='tooltip' data-placement='bottom' title='' data-original-title='Tasks pending' class='btn btn-outline-secondary filterClick'>PD</button></th>
 </tr>
 </thead>
 <tbody>
@@ -33,7 +33,7 @@
 {{exp.symbolSummary_se| safe }}
 {{exp.symbolSummary_tc| safe }}
 {{exp.symbolSummary_nc| safe }}
-{{exp.symbolSummary_nan| safe }}
+{{exp.symbolSummary_pd| safe }}
 
 </tr>
 </tbody>

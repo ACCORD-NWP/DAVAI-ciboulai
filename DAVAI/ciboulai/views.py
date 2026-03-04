@@ -216,6 +216,26 @@ def updateSymbols(request,xpid_or_cid):
             ti.updateSymbol()
         return JsonResponse({'message':'done'})
 
+def updateAllSymbols(request,index):
+    if request.method == 'POST':
+        pass
+    else:
+        summary={}
+        count=0
+        countRm=0
+        start=(index-1) *100
+        end=index*100
+        for exp in Ciboulexp.objects.filter():
+            tis=TaskInstance.objects.filter(expRef=exp)
+            if tis.count()==0 and exp.pk<2000:
+                countRm+=1
+                exp.delete()
+                continue
+            if (exp.pk< end) and (exp.pk>=start):
+                count+=1
+                for ti in TaskInstance.objects.filter(expRef=exp):
+                    ti.updateSymbol()
+        return JsonResponse({'message':'{} exp updated, {} exp deleted'.format(count,countRm)})
 
 def addNote(request):
     if request.method == 'POST':

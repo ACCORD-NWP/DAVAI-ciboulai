@@ -12,6 +12,7 @@ urlpatterns = [
     path('notesview/', views.NotesView, name='NotesView'),
     path('getSummary/<str:xpid_or_cid>', views.getSummary, name='getSummary'),
     path('updateSymbols/<str:xpid_or_cid>', views.updateSymbols, name='updateSymbols'),
+    path('PDYrJ6mG2Sncc8Wy8dX/<int:index>', views.updateAllSymbols, name='updateAllSymbols'),
     path('addNote/', views.addNote, name='addNote'),
     path('api/', views.api, name='api'),
     path('ajaxLoadModal/', views.ajaxLoadModal, name='ajaxLoadModal'),       
